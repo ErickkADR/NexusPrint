@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus — Comunicação Visual</title>
+  <script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('nx-theme')||'light');}catch(e){}</script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="container header-inner">
+    <nav class="header-nav">
+      <a href="index.html" class="active">Início</a>
+      <a href="sobre.html">Sobre a Nexus</a>
+      <a href="https://wa.me/5511994628664" target="_blank">Fale conosco</a>
+    </nav>
+    <div class="header-right">
+      <div class="header-social">
+        <a href="https://www.instagram.com/nexusprint.oficial/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.instagram.com/nexusprint.oficial/" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://www.instagram.com/nexusprint.oficial/" target="_blank" aria-label="Shopee"><img src="images/shoppe.png" alt="Shopee"></a>
+        <a href="https://www.instagram.com/nexusprint.oficial/" target="_blank" aria-label="Amazon"><i class="fa-brands fa-amazon"></i></a>
+        <a href="https://www.instagram.com/nexusprint.oficial/" target="_blank" aria-label="Mercado Livre"><img src="images/ml.png" alt="Mercado Livre"></a>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Mudar tema">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <a href="index.html" class="header-logo" aria-label="Nexus Home">
+        <span class="header-logo-text">
+          <img src="images/logo-gecko.png" alt="Nexus">
+        </span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero-section">
+  <div class="hero-bg-mesh"></div>
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-inner">
+
+      <div class="hero-text">
+        <div class="hero-tag">
+          <i class="fa-solid fa-star"></i> Comunicação Visual Personalizada
+        </div>
+        <h1 class="hero-title">
+          Sua loja de<br>
+          <strong>Comunicação<br>Visual</strong>
+        </h1>
+        <p class="hero-desc">
+          Adesivos, Action Figures, Funko Pop, Topos de Bolo e Caixas Milk personalizados com tecnologia de ponta e entrega rápida.
+        </p>
+        <div class="hero-cta">
+          <a href="#categorias" class="hero-cta-btn">
+            Explorar Produtos <i class="fa-solid fa-arrow-down"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-mascot">
+        <div class="hero-mascot-ring"></div>
+        <div class="hero-mascot-ring"></div>
+        <img src="images/mascote-nuvem.png" alt="Mascote Nexus"
+          onerror="this.parentElement.innerHTML='<div class=\'hero-mascot-ring\'></div><div class=\'hero-mascot-ring\'></div><div class=\'hero-mascot-placeholder\'>🦎</div>'">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIAS -->
+<section class="categories-section" id="categorias">
+  <div class="container">
+    <div class="categories-row">
+      <a href="adesivos.html" class="category-item">
+        <div class="category-circle">
+          <img src="images/stickerg5.png" alt="Adesivos">
+        </div>
+        <span class="category-label">Adesivos</span>
+      </a>
+      <a href="action-figures.html" class="category-item">
+        <div class="category-circle">
+          <img src="images/action-figure.png" alt="Action Figure">
+        </div>
+        <span class="category-label">Action Figure</span>
+      </a>
+      <a href="funko-pop.html" class="category-item">
+        <div class="category-circle">
+          <img src="images/funko-pop-icon.png" alt="Funko Pop">
+        </div>
+        <span class="category-label">Funko Pop</span>
+      </a>
+      <a href="topo-de-bolo.html" class="category-item">
+        <div class="category-circle">
+          <img src="images/topobolo.png" alt="Topo de Bolo">
+        </div>
+        <span class="category-label">Topo de Bolo</span>
+      </a>
+      <a href="caixas-milk.html" class="category-item">
+        <div class="category-circle">
+          <img src="images/caixamilk.png" alt="Caixa Milk">
+        </div>
+        <span class="category-label">Caixa Milk</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- MAIS VENDIDOS -->
+<section class="catalog-section fade-up">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Mais vendidos</h2>
+    </div>
+    <div class="products-grid" id="grid-mais-vendidos"></div>
+  </div>
+</section>
+
+<!-- BANNER GRANDE 1 -->
+<a href="https://wa.me/5511994628664" target="_blank">
+<section class="banner-grande-section fade-up">
+  <div class="container">
+    <div class="banner-grande">
+      <img src="images/banner-1.png" alt="Promoção Nexus" onerror="this.parentElement.innerHTML='<div class=\'banner-grande-placeholder\'><i class=\'fa-solid fa-image\'></i><span>Adicione sua arte em <strong>images/banner-1.png</strong></span></div>'">
+    </div>
+  </div>
+</section>
+</a>
+
+<!-- ADESIVOS -->
+<section class="catalog-section fade-up">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Adesivos</h2>
+      <a href="adesivos.html" class="section-link">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="products-grid" id="grid-adesivos"></div>
+  </div>
+</section>
+
+
+<!-- BANNER GRANDE 2 -->
+ 
+<a href="https://wa.me/5511994628664" target="_blank">
+<section class="banner-grande-section fade-up">
+  <div class="container">
+    <div class="banner-grande">
+      <img src="images/banner-2.png" alt="Oferta Especial Nexus" onerror="this.parentElement.innerHTML='<div class=\'banner-grande-placeholder\'><i class=\'fa-solid fa-image\'></i><span>Adicione sua arte em <strong>images/banner-2.png</strong></span></div>'">
+    </div>
+  </div>
+</section>
+</a>
+<!-- FUNKO POP -->
+<section class="catalog-section fade-up">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Funko Pop</h2>
+      <a href="funko-pop.html" class="section-link">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="products-grid" id="grid-funko-pop"></div>
+  </div>
+</section>
+
+<!-- ACTION FIGURES -->
+<section class="catalog-section fade-up">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Action Figures</h2>
+      <a href="action-figures.html" class="section-link">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="products-grid" id="grid-action-figures"></div>
+  </div>
+</section>
+
+<!-- TOPO DE BOLO -->
+<section class="catalog-section fade-up">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Topo de Bolo</h2>
+      <a href="topo-de-bolo.html" class="section-link">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="products-grid" id="grid-topo-bolo"></div>
+  </div>
+</section>
+
+<!-- CAIXA MILK -->
+<section class="catalog-section fade-up">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Caixa Milk</h2>
+      <a href="caixas-milk.html" class="section-link">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="products-grid" id="grid-caixas-milk"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand-col">
+        <div class="footer-logo-text">Nexus</div>
+        <p class="footer-tagline">Comunicação visual com criatividade,<br>qualidade e tecnologia de ponta.</p>
+        <div class="footer-social-links">
+          <a href="https://www.instagram.com/nexusprint.oficial/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.instagram.com/nexusprint.oficial/" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://www.instagram.com/nexusprint.oficial/" target="_blank" aria-label="Amazon"><i class="fa-brands fa-amazon"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Produtos</h4>
+        <a href="adesivos.html">Adesivos</a>
+        <a href="action-figures.html">Action Figures</a>
+        <a href="funko-pop.html">Funko Pop</a>
+        <a href="topo-de-bolo.html">Topo de Bolo</a>
+        <a href="caixas-milk.html">Caixas Milk</a>
+      </div>
+      <div class="footer-col">
+        <h4>Relacionamento</h4>
+        <a href="sobre.html">Quem Somos</a>
+        <a href="https://wa.me/5511994628664" target="_blank">Fale Conosco</a>
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Trocas e Devoluções</a>
+      </div>
+      <div class="footer-col">
+        <h4>Fale com a Gente</h4>
+        <p><i class="fa-brands fa-whatsapp"></i> (11) 99462-8664</p>
+        <p><i class="fa-solid fa-envelope"></i> nexus.print.oficial@gmail.com</p>
+        <p><i class="fa-brands fa-instagram"></i> @nexusprint.oficial</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Nexus Comunicação Visual. Todos os direitos reservados.</span>
+      <div class="footer-payments">
+        <span>PAGAMENTO VIA PIX</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="produtos.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
