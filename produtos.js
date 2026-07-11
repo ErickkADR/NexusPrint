@@ -1858,7 +1858,6 @@ const PRODUCTS = [
     id: "cm-one-piece",
     nome: "Caixa Milk One Piece",
     imagem: "images/opcaixa.png",
-    imagens: ["images/opcaixa.png", "images/foto2.jpg", "images/foto3.jpg"],
     categoria: "caixas-milk",
     subcategoria: "anime",
     serie: "One Piece",

@@ -400,7 +400,7 @@ function addProduct(p) {
 (function caixasMilk() {
   const st = STYLE['caixas-milk'];
   const existentes = [
-    { id: 'cm-one-piece', nome: 'Caixa Milk One Piece', imagem: 'images/opcaixa.png', imagens: ['images/opcaixa.png', 'images/foto2.jpg', 'images/foto3.jpg'], subcategoria: 'anime', serie: 'One Piece', preco: 4.90, emoji: '🏴‍☠️', cor1: '#FF4500', cor2: '#FFD700', destaque: true },
+    { id: 'cm-one-piece', nome: 'Caixa Milk One Piece', imagem: 'images/opcaixa.png', subcategoria: 'anime', serie: 'One Piece', preco: 4.90, emoji: '🏴‍☠️', cor1: '#FF4500', cor2: '#FFD700', destaque: true },
     { id: 'cm-princesa', nome: 'Caixa Milk Princesa', imagem: 'images/princesacaixa.png', subcategoria: 'infantil', serie: 'Princesa', preco: 4.50, emoji: '👑', cor1: '#FFB6C1', cor2: '#FF69B4', destaque: true },
     { id: 'cm-super-herois', nome: 'Caixa Milk Super-Heróis', imagem: 'images/hulkcaixa.png', subcategoria: 'super-herois', serie: 'Marvel / DC', preco: 4.90, emoji: '🦸', cor1: '#DC143C', cor2: '#00008B', destaque: true },
     { id: 'cm-futebol', nome: 'Caixa Milk Futebol', imagem: 'images/corinthians-caixa.png', subcategoria: 'esportes', serie: 'Futebol', preco: 4.50, emoji: '⚽', cor1: '#2ECC71', cor2: '#1ABC9C', destaque: false },
