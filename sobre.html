@@ -27,6 +27,10 @@
         <a href="https://www.instagram.com/nexusprint.oficial/" target="_blank" aria-label="Amazon"><i class="fa-brands fa-amazon"></i></a>
         <a href="https://www.instagram.com/nexusprint.oficial/" target="_blank" aria-label="Mercado Livre"><img src="images/ml.png" alt="Mercado Livre"></a>
       </div>
+      <button class="cart-btn" id="cart-open-btn" aria-label="Carrinho">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="cart-badge hidden">0</span>
+      </button>
       <button class="theme-toggle" id="theme-toggle" aria-label="Mudar tema">
         <i class="fa-solid fa-moon"></i>
       </button>
@@ -535,6 +539,8 @@
         <a href="funko-pop.html">Funko Pop</a>
         <a href="topo-de-bolo.html">Topo de Bolo</a>
         <a href="caixas-milk.html">Caixas Milk</a>
+        <a href="cartoes.html">Cartões de Visita</a>
+        <a href="figurinhas.html">Figurinhas Copa</a>
       </div>
       <div class="footer-col">
         <h4>Relacionamento</h4>
@@ -558,7 +564,24 @@
   </div>
 </footer>
 
+<!-- CARRINHO -->
+<div class="cart-overlay" id="cart-overlay"></div>
+<aside class="cart-drawer" id="cart-drawer">
+  <div class="cart-drawer-header">
+    <h3>Seu carrinho</h3>
+    <button type="button" class="cart-drawer-close" id="cart-drawer-close" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="cart-drawer-items" id="cart-drawer-items"></div>
+  <div class="cart-drawer-footer">
+    <div class="cart-total-row"><span>Total</span><span id="cart-total">R$ 0,00</span></div>
+    <button type="button" class="btn-whatsapp" id="cart-checkout-btn">
+      <i class="fa-brands fa-whatsapp"></i> Finalizar pedido no WhatsApp
+    </button>
+  </div>
+</aside>
+
 <script src="produtos.js"></script>
+<script src="cart.js"></script>
 <script src="script.js"></script>
 <script>
 /* ── Reveal por scroll ── */

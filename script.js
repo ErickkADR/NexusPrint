@@ -136,6 +136,77 @@ function initHome() {
   });
 }
 
+// ─── ÁREA DE COMPRA (preço + faixas/quantidade/orçamento) ──
+function renderPurchaseArea(p) {
+  const priceWrap = document.getElementById('product-pricing-wrap');
+  const purchaseArea = document.getElementById('product-purchase-area');
+  const waBtn = document.getElementById('whatsapp-btn');
+  if (!priceWrap || !purchaseArea) return;
+
+  if (p.precoTipo === 'orcamento') {
+    priceWrap.innerHTML = `<span class="product-detail-price product-price-orcamento">Sob orçamento</span>`;
+    purchaseArea.innerHTML = `<div class="product-orcamento-note"><i class="fa-solid fa-circle-info"></i> Cada peça é feita sob encomenda — chame no WhatsApp com os detalhes (tamanho, cores, referências) para receber o valor.</div>`;
+    if (waBtn) { waBtn.classList.remove('btn-secondary'); waBtn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Pedir orçamento'; }
+    return;
+  }
+
+  if (waBtn) { waBtn.classList.add('btn-secondary'); waBtn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Tirar dúvidas'; }
+
+  if (p.precoTipo === 'faixas') {
+    priceWrap.innerHTML = `<span class="product-price-from">a partir de</span> <span class="product-detail-price">${formatPrice(p.faixas[0].preco)}</span>`;
+    let selected = 0;
+    const renderTiers = () => {
+      purchaseArea.innerHTML = `
+        <div class="price-tier-table">
+          ${p.faixas.map((f, i) => `
+            <div class="price-tier-row ${i === selected ? 'active' : ''}" data-i="${i}">
+              <span class="price-tier-qtd">${f.qtd} ${f.qtd === 1 ? 'unidade' : 'unidades'}</span>
+              <span class="price-tier-unit">${formatPrice(f.preco / f.qtd)} /un</span>
+              <span class="price-tier-total">${formatPrice(f.preco)}</span>
+            </div>`).join('')}
+        </div>
+        <button type="button" class="btn-whatsapp" id="add-cart-btn">
+          <i class="fa-solid fa-cart-plus"></i> Adicionar ao carrinho
+        </button>`;
+      purchaseArea.querySelectorAll('.price-tier-row').forEach(row => {
+        row.addEventListener('click', () => { selected = Number(row.dataset.i); renderTiers(); });
+      });
+      document.getElementById('add-cart-btn').addEventListener('click', () => {
+        const f = p.faixas[selected];
+        cartAdd({ id: p.id, nome: p.nome, imagem: p.imagem, emoji: p.emoji, precoUnit: f.preco, qtd: 1, faixaLabel: `${f.qtd} ${f.qtd === 1 ? 'unidade' : 'unidades'}` });
+      });
+    };
+    renderTiers();
+    return;
+  }
+
+  // unidade | unico
+  priceWrap.innerHTML = `<span class="product-detail-price">${formatPrice(p.preco)}</span>${p.precoTipo === 'unidade' ? '<span class="product-price-suffix">/un</span>' : ''}`;
+  let qty = 1;
+  const renderQty = () => {
+    purchaseArea.innerHTML = `
+      <div class="product-qty-row">
+        <span class="product-qty-label">Quantidade</span>
+        <div class="qty-stepper">
+          <button type="button" id="qty-minus">−</button>
+          <input type="number" id="qty-input" min="1" value="${qty}">
+          <button type="button" id="qty-plus">+</button>
+        </div>
+      </div>
+      <div class="product-detail-total">Total: <strong>${formatPrice(p.preco * qty)}</strong></div>
+      <button type="button" class="btn-whatsapp" id="add-cart-btn">
+        <i class="fa-solid fa-cart-plus"></i> Adicionar ao carrinho
+      </button>`;
+    document.getElementById('qty-minus').addEventListener('click', () => { qty = Math.max(1, qty - 1); renderQty(); });
+    document.getElementById('qty-plus').addEventListener('click', () => { qty = qty + 1; renderQty(); });
+    document.getElementById('qty-input').addEventListener('change', e => { qty = Math.max(1, parseInt(e.target.value, 10) || 1); renderQty(); });
+    document.getElementById('add-cart-btn').addEventListener('click', () => {
+      cartAdd({ id: p.id, nome: p.nome, imagem: p.imagem, emoji: p.emoji, precoUnit: p.preco, qtd });
+    });
+  };
+  renderQty();
+}
+
 // ─── INICIALIZAÇÃO PÁGINA PRODUTO ──────────────
 function initProductPage() {
   const params = new URLSearchParams(location.search);
@@ -155,15 +226,8 @@ function initProductPage() {
   const titleEl = document.getElementById('product-title');
   if (titleEl) titleEl.textContent = p.nome;
 
-  // Price
-  const priceEl = document.getElementById('product-price');
-  if (priceEl) priceEl.textContent = formatPrice(p.preco);
-
-  const originalEl = document.getElementById('product-original');
-  if (originalEl) originalEl.textContent = formatPrice(p.precoOriginal);
-
-  const badgeEl = document.getElementById('product-badge');
-  if (badgeEl) badgeEl.textContent = p.badge;
+  // Preço + faixas/quantidade/orçamento
+  renderPurchaseArea(p);
 
   // Descrição
   const descEl = document.getElementById('product-desc');
@@ -219,7 +283,9 @@ function initProductPage() {
     'action-figures': 'Figures',
     'funko-pop': 'Funko Pop',
     'topo-de-bolo': 'Topo de Bolo',
-    'caixas-milk': 'Caixa Milk'
+    'caixas-milk': 'Caixa Milk',
+    'cartoes': 'Cartões de Visita',
+    'figurinhas-copa': 'Figurinhas Copa'
   };
   const pageCatEl = document.getElementById('page-category-title');
   if (pageCatEl) pageCatEl.textContent = pageCat[p.categoria] || p.categoria;
@@ -255,7 +321,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (page === 'index.html' || page === '') initHome();
   else if (page === 'produto.html') initProductPage();
-  else if (['adesivos.html','action-figures.html','funko-pop.html','topo-de-bolo.html','caixas-milk.html'].includes(page)) {
+  else if (['action-figures.html', 'funko-pop.html'].includes(page)) initCategoryPage();
+  else if (['adesivos.html', 'topo-de-bolo.html', 'caixas-milk.html', 'cartoes.html', 'figurinhas.html'].includes(page)) {
     renderSubsections();
   }
 

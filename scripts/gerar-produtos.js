@@ -517,6 +517,12 @@ function renderProductCard(product) {
          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">\`
     : '';
   const placeholderStyle = product.imagem ? 'display:none' : '';
+  const quickAddHtml = (product.precoTipo === 'unidade' || product.precoTipo === 'unico')
+    ? \`<button type="button" class="product-card-add-cart" aria-label="Adicionar ao carrinho"
+         onclick="event.preventDefault();event.stopPropagation();quickAddToCart('\${product.id}')">
+         <i class="fa-solid fa-cart-plus"></i>
+       </button>\`
+    : '';
   return \`
     <a href="produto.html?id=\${product.id}" class="product-card">
       <div class="product-image">
@@ -524,6 +530,7 @@ function renderProductCard(product) {
         <div class="product-emoji-placeholder" style="--c1:\${product.cor1};--c2:\${product.cor2};\${placeholderStyle}">
           \${product.emoji}
         </div>
+        \${quickAddHtml}
       </div>
       <div class="product-body">
         <div class="product-cat">\${product.serie}</div>
