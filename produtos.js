@@ -813,8 +813,8 @@ const PRODUCTS = [
   {
     id: "fp-casal-fantasiados",
     nome: "Casal Fantasiados",
-    imagem: "images/produtos/funko-pop/casal-fantasiados/casal-fantasiados-1.png",
-    imagens: ["images/produtos/funko-pop/casal-fantasiados/casal-fantasiados-1.png", "images/produtos/funko-pop/casal-fantasiados/casal-fantasiados-2.png"],
+    imagem: "images/produtos/funko-pop/casal-fantasiados/casal-fantasiados-thumb.jpeg",
+    imagens: ["images/produtos/funko-pop/casal-fantasiados/casal-fantasiados-thumb.jpeg", "images/produtos/funko-pop/casal-fantasiados/casal-fantasiados-1.png", "images/produtos/funko-pop/casal-fantasiados/casal-fantasiados-2.png"],
     categoria: "funko-pop",
     subcategoria: "casamento",
     serie: "Funko Pop 3D",

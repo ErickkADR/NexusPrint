@@ -31,8 +31,15 @@ function slugify(str) {
 function naturalSort(arr) {
   return [...arr].sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 }
-function listPngs(dir) {
-  return naturalSort(fs.readdirSync(dir).filter(f => f.toLowerCase().endsWith('.png')));
+const IMG_EXTS = ['.png', '.jpg', '.jpeg'];
+// Lista as imagens de uma pasta (png/jpg/jpeg). Um arquivo com "-thumb" no
+// nome vem sempre primeiro (é a foto de capa escolhida à mão); o resto segue
+// em ordem natural.
+function listImages(dir) {
+  const files = naturalSort(fs.readdirSync(dir).filter(f => IMG_EXTS.includes(path.extname(f).toLowerCase())));
+  const thumbs = files.filter(f => /-thumb\./i.test(f));
+  const rest = files.filter(f => !/-thumb\./i.test(f));
+  return [...thumbs, ...rest];
 }
 function ensureDir(dir) { fs.mkdirSync(dir, { recursive: true }); }
 function copyInto(srcFile, destDir) {
@@ -125,7 +132,7 @@ function addProduct(p) {
   // Autorais: autoral-1..11
   const autoraisDir = path.join(SRC, 'ADESIVOS/Autorais');
   const destAutorais = path.join(IMG_DEST_ROOT, 'adesivos/autorais');
-  listPngs(autoraisDir).forEach(file => {
+  listImages(autoraisDir).forEach(file => {
     const n = file.match(/(\d+)/)?.[1] || '';
     const dest = copyInto(path.join(autoraisDir, file), destAutorais);
     addProduct({
@@ -213,7 +220,7 @@ function addProduct(p) {
     'majin-1': 'Adesivo Majin Boo', 'rimuru-1': 'Adesivo Rimuru',
     'hollowknight-1': 'Adesivo Hollow Knight Nº1', 'hollowknight-2': 'Adesivo Hollow Knight Nº2', 'hollowknight-3': 'Adesivo Hollow Knight Nº3',
   };
-  listPngs(temDir).forEach(file => {
+  listImages(temDir).forEach(file => {
     const key = file.replace(/\.png$/i, '');
     const nome = TEM_NAMES[key] || `Adesivo ${key}`;
     const dest = copyInto(path.join(temDir, file), destTem);
@@ -291,7 +298,7 @@ function addProduct(p) {
     const slug = slugify(folder);
     const srcDir = path.join(baseDir, folder);
     const destDir = path.join(IMG_DEST_ROOT, 'action-figures', slug);
-    const imgs = listPngs(srcDir).map(f => toSiteRelative(copyInto(path.join(srcDir, f), destDir)));
+    const imgs = listImages(srcDir).map(f => toSiteRelative(copyInto(path.join(srcDir, f), destDir)));
     const sub = ACESSORIOS.has(folder) ? 'acessorios' : 'personagens';
     addProduct({
       id: `af-${slug}`, nome: folder,
@@ -319,7 +326,7 @@ function addProduct(p) {
     const slug = slugify(folder);
     const srcDir = path.join(baseDir, folder);
     const destDir = path.join(IMG_DEST_ROOT, 'funko-pop', slug);
-    const imgs = listPngs(srcDir).map(f => toSiteRelative(copyInto(path.join(srcDir, f), destDir)));
+    const imgs = listImages(srcDir).map(f => toSiteRelative(copyInto(path.join(srcDir, f), destDir)));
     const sub = CASAMENTO_SUB.has(folder) ? 'casamento' : FAMOSOS.has(folder) ? 'famosos' : 'personagens';
     const isCasal = CASAL.has(folder);
     addProduct({
@@ -336,7 +343,7 @@ function addProduct(p) {
   // Cerberus vem da pasta de Action Figures, mas é um Funko Pop
   const cerbSrcDir = path.join(SRC, '3D/Action Figures/Cerberus');
   const cerbDestDir = path.join(IMG_DEST_ROOT, 'funko-pop/cerberus');
-  const cerbImgs = listPngs(cerbSrcDir).map(f => toSiteRelative(copyInto(path.join(cerbSrcDir, f), cerbDestDir)));
+  const cerbImgs = listImages(cerbSrcDir).map(f => toSiteRelative(copyInto(path.join(cerbSrcDir, f), cerbDestDir)));
   addProduct({
     id: 'fp-cerberus', nome: 'Cerberus',
     imagem: cerbImgs[0], imagens: cerbImgs,
@@ -418,7 +425,7 @@ function addProduct(p) {
   // Anime
   const animeDir = path.join(base, 'Anime');
   const destAnime = path.join(IMG_DEST_ROOT, 'figurinhas-copa/anime');
-  listPngs(animeDir).forEach(file => {
+  listImages(animeDir).forEach(file => {
     const key = file.replace(/\.png$/i, '');
     const nome = ANIME_NAMES[key] || key;
     const dest = toSiteRelative(copyInto(path.join(animeDir, file), destAnime));
@@ -428,7 +435,7 @@ function addProduct(p) {
   // Blue Lock
   const blDir = path.join(base, 'Blue Lock');
   const destBl = path.join(IMG_DEST_ROOT, 'figurinhas-copa/blue-lock');
-  listPngs(blDir).forEach(file => {
+  listImages(blDir).forEach(file => {
     const key = file.replace(/\.png$/i, '');
     const nome = BLUELOCK_NAMES[key] || key;
     const dest = toSiteRelative(copyInto(path.join(blDir, file), destBl));
@@ -438,7 +445,7 @@ function addProduct(p) {
   // One Piece (numeradas, sem nome de personagem identificado)
   const opDir = path.join(base, 'One Piece');
   const destOp = path.join(IMG_DEST_ROOT, 'figurinhas-copa/one-piece');
-  listPngs(opDir).forEach(file => {
+  listImages(opDir).forEach(file => {
     const n = file.match(/(\d+)/)?.[1] || '';
     const dest = toSiteRelative(copyInto(path.join(opDir, file), destOp));
     addFigurinha(`fc-op-${n}`, `Figurinha One Piece Nº${n}`, [dest], 'Figurinha One Piece');
@@ -459,7 +466,7 @@ function addProduct(p) {
   // Pets Personalizados (galeria única — exemplos do serviço)
   const petsDir = path.join(base, 'Pets Personalizados');
   const destPets = path.join(IMG_DEST_ROOT, 'figurinhas-copa/pets');
-  const petsImgs = listPngs(petsDir).map(f => toSiteRelative(copyInto(path.join(petsDir, f), destPets)));
+  const petsImgs = listImages(petsDir).map(f => toSiteRelative(copyInto(path.join(petsDir, f), destPets)));
   addFigurinha(
     'fc-pet-personalizado', 'Figurinha da Copa com seu Pet Personalizada', petsImgs, 'Figurinha Personalizada',
     'Envie sua foto e entre em contato para criarmos juntos!\n\nFigurinha personalizada estilo álbum de copa com a foto do seu pet. Impressão de alta qualidade e corte de precisão.'
