@@ -1037,6 +1037,16 @@ header {
   font-family: var(--font-display);
 }
 
+.subsection-subtitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 20px 0 10px;
+  font-family: var(--font);
+}
+
 /* ═══════════════════════════════════════════════
    FILTER TABS
 ═══════════════════════════════════════════════ */

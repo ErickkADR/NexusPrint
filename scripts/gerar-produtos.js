@@ -178,7 +178,7 @@ function addProduct(p) {
     emoji: st.emoji, cor1: '#D4AF37', cor2: '#F5E6C8', destaque: false,
   });
 
-  const gaviriaFiles = ['gaviria-1.png', 'gaviria-2.png', 'tattoo-gaviria.png'];
+  const gaviriaFiles = ['tattoo-gaviria.png', 'gaviria-1.png', 'gaviria-2.png'];
   const gaviriaImgs = gaviriaFiles.map(f => toSiteRelative(copyInto(path.join(persDir, f), destPers)));
   addProduct({
     id: 'ad-cartela-personalizados', nome: 'Cartela de Adesivos Personalizados',
@@ -396,6 +396,7 @@ function addProduct(p) {
   const cmSt = STYLE['caixas-milk'];
   addProduct({
     id: 'pz-caixa-milk-personalizada', nome: 'Caixa Milk Personalizada',
+    imagem: 'images/hulkcaixa.png',
     categoria: 'caixas-milk', subcategoria: 'personalizada', serie: 'Caixa Milk',
     precoTipo: 'orcamento',
     descricao: 'Entre em contato!\n\nCaixa milk no tema que você quiser, com a arte e as cores do seu evento. Impressão em papel couché de alta qualidade (Epson L3250) e corte de precisão (Silhouette Cameo 5).',
@@ -409,12 +410,13 @@ function addProduct(p) {
   const st = STYLE['figurinhas-copa'];
   const base = path.join(SRC, 'FIGURINHAS COPA');
 
-  // categoria fica 'adesivos' (subcategoria única 'figurinhas-copa') — a "série"
-  // (Figurinha Anime / Blue Lock / etc) continua diferenciando o tipo no card.
-  function addFigurinha(id, nome, imgs, serie, descricaoOverride) {
+  // categoria fica 'adesivos' — a subcategoria separa os grupos de figurinhas
+  // (anime / blue lock / one piece / personalizadas), todos ainda "Figurinhas
+  // Copa" (mesma seção na página de Adesivos, só com sub-blocos por grupo).
+  function addFigurinha(id, nome, imgs, grupo, serie, descricaoOverride) {
     addProduct({
       id, nome, imagem: imgs[0], imagens: imgs,
-      categoria: 'adesivos', subcategoria: 'figurinhas-copa', serie,
+      categoria: 'adesivos', subcategoria: `figurinhas-${grupo}`, serie,
       precoTipo: 'unidade', precoConst: 'STICKER_UNITARIO',
       descricao: descricaoOverride || `Figurinha ${nome} estilo álbum, impressão de alta qualidade e corte de precisão. Vendida avulsa — ótima para álbuns temáticos, troca com amigos ou lembrancinha de festa.`,
       specs: ['Impressão de alta qualidade', 'Corte de precisão', 'Vendida por unidade', 'Ideal para álbuns e trocas'],
@@ -429,7 +431,7 @@ function addProduct(p) {
     const key = file.replace(/\.png$/i, '');
     const nome = ANIME_NAMES[key] || key;
     const dest = toSiteRelative(copyInto(path.join(animeDir, file), destAnime));
-    addFigurinha(`fc-anime-${slugify(key)}`, nome, [dest], 'Figurinha Anime');
+    addFigurinha(`fc-anime-${slugify(key)}`, nome, [dest], 'anime', 'Figurinha Anime');
   });
 
   // Blue Lock
@@ -439,7 +441,7 @@ function addProduct(p) {
     const key = file.replace(/\.png$/i, '');
     const nome = BLUELOCK_NAMES[key] || key;
     const dest = toSiteRelative(copyInto(path.join(blDir, file), destBl));
-    addFigurinha(`fc-bluelock-${slugify(key)}`, nome, [dest], 'Figurinha Blue Lock');
+    addFigurinha(`fc-bluelock-${slugify(key)}`, nome, [dest], 'bluelock', 'Figurinha Blue Lock');
   });
 
   // One Piece (numeradas, sem nome de personagem identificado)
@@ -448,7 +450,7 @@ function addProduct(p) {
   listImages(opDir).forEach(file => {
     const n = file.match(/(\d+)/)?.[1] || '';
     const dest = toSiteRelative(copyInto(path.join(opDir, file), destOp));
-    addFigurinha(`fc-op-${n}`, `Figurinha One Piece Nº${n}`, [dest], 'Figurinha One Piece');
+    addFigurinha(`fc-op-${n}`, `Figurinha One Piece Nº${n}`, [dest], 'onepiece', 'Figurinha One Piece');
   });
 
   // Personalizadas: um único produto consolidado com todos os exemplos (neymar + genéricas)
@@ -459,7 +461,7 @@ function addProduct(p) {
     'neymar-1.png', 'neymar-2.png', 'neymar-3.png',
   ].map(f => toSiteRelative(copyInto(path.join(persDir, f), destPersFc)));
   addFigurinha(
-    'fc-personalizada', 'Figurinha da Copa Personalizada', personalizadaImgs, 'Figurinha Personalizada',
+    'fc-personalizada', 'Figurinha da Copa Personalizada', personalizadaImgs, 'personalizadas', 'Figurinha Personalizada',
     'Envie sua foto e entre em contato para criarmos juntos!\n\nFigurinha personalizada estilo álbum de copa, com a sua foto ou de quem você quiser. Impressão de alta qualidade e corte de precisão.'
   );
 
@@ -468,7 +470,7 @@ function addProduct(p) {
   const destPets = path.join(IMG_DEST_ROOT, 'figurinhas-copa/pets');
   const petsImgs = listImages(petsDir).map(f => toSiteRelative(copyInto(path.join(petsDir, f), destPets)));
   addFigurinha(
-    'fc-pet-personalizado', 'Figurinha da Copa com seu Pet Personalizada', petsImgs, 'Figurinha Personalizada',
+    'fc-pet-personalizado', 'Figurinha da Copa com seu Pet Personalizada', petsImgs, 'personalizadas', 'Figurinha Personalizada',
     'Envie sua foto e entre em contato para criarmos juntos!\n\nFigurinha personalizada estilo álbum de copa com a foto do seu pet. Impressão de alta qualidade e corte de precisão.'
   );
 })();
@@ -569,16 +571,30 @@ function getDestaquesByCategory(cat, limit = 5) {
   return PRODUCTS.filter(p => p.categoria === cat && p.destaque).slice(0, limit);
 }
 
+// Produtos "sob encomenda" que aparecem na página Personalizados não devem
+// aparecer nas prévias de categoria da home (index.html).
+function getPersonalizadosIds() {
+  return new Set([
+    ...getCartoesPersonalizados(),
+    ...getFunkosPersonalizados(),
+    ...getAdesivosPersonalizados(),
+    ...getFigurinhasPersonalizadas(),
+    ...getCaixaMilkPersonalizada(),
+  ].map(p => p.id));
+}
+
 function getTopByCategory(cat, limit = 5) {
-  const dest = PRODUCTS.filter(p => p.categoria === cat && p.destaque);
-  const rest = PRODUCTS.filter(p => p.categoria === cat && !p.destaque);
+  const personalizadosIds = getPersonalizadosIds();
+  const pool = PRODUCTS.filter(p => p.categoria === cat && !personalizadosIds.has(p.id));
+  const dest = pool.filter(p => p.destaque);
+  const rest = pool.filter(p => !p.destaque);
   return [...dest, ...rest].slice(0, limit);
 }
 
-function getMaisVendidos(limit = 5) {
-  const priority = PRODUCTS.filter(p => p.destaque && (p.categoria === 'funko-pop' || p.categoria === 'adesivos'));
-  const others = PRODUCTS.filter(p => p.destaque && p.categoria !== 'funko-pop' && p.categoria !== 'adesivos');
-  return [...priority, ...others].slice(0, limit);
+// Home — "Mais vendidos": lista curada à mão (não é cálculo automático).
+const HOME_MAIS_VENDIDOS_IDS = ['ad-autoral-1', 'ad-autoral-2', 'fp-d-va', 'ad-tem-majin-1', 'af-vecna'];
+function getMaisVendidos() {
+  return HOME_MAIS_VENDIDOS_IDS.map(id => getProductById(id)).filter(Boolean);
 }
 
 function getProductById(id) {
@@ -596,8 +612,7 @@ function getAdesivosPersonalizados() {
   return getProductsBySubcategory('adesivos', 'personalizados');
 }
 function getFigurinhasPersonalizadas() {
-  return PRODUCTS.filter(p => p.categoria === 'adesivos' && p.subcategoria === 'figurinhas-copa'
-    && (p.id.indexOf('fc-personalizada') === 0 || p.id.indexOf('fc-pet') === 0));
+  return PRODUCTS.filter(p => p.id.indexOf('fc-personalizada') === 0 || p.id.indexOf('fc-pet') === 0);
 }
 function getCaixaMilkPersonalizada() {
   return PRODUCTS.filter(p => p.categoria === 'caixas-milk' && p.subcategoria === 'personalizada');

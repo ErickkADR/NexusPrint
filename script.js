@@ -200,7 +200,7 @@ function renderPurchaseArea(p) {
     document.getElementById('qty-plus').addEventListener('click', () => { qty = qty + 1; renderQty(); });
     document.getElementById('qty-input').addEventListener('change', e => { qty = Math.max(1, parseInt(e.target.value, 10) || 1); renderQty(); });
     document.getElementById('add-cart-btn').addEventListener('click', () => {
-      cartAdd({ id: p.id, nome: p.nome, imagem: p.imagem, emoji: p.emoji, precoUnit: p.preco, qtd });
+      cartAdd({ id: p.id, nome: p.nome, imagem: p.imagem, emoji: p.emoji, precoUnit: p.preco, qtd: qty });
     });
   };
   renderQty();
