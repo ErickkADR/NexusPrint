@@ -11,6 +11,10 @@ const SITE_ROOT = path.resolve(__dirname, '..');
 const IMG_DEST_ROOT = path.join(SITE_ROOT, 'images/produtos');
 const OUT_FILE = path.join(SITE_ROOT, 'produtos.js');
 
+// Limpa a pasta de imagens geradas antes de copiar de novo, pra nunca sobrar
+// arquivo órfão de uma categorização antiga (ex.: produto que mudou de categoria).
+fs.rmSync(IMG_DEST_ROOT, { recursive: true, force: true });
+
 /* ─── utils ─────────────────────────────────────────────── */
 function slugify(str) {
   let out = '';
