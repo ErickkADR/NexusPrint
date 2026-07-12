@@ -18,10 +18,12 @@ const FAIXAS_CAIXINHAS = [ {qtd:10,preco:24.90}, {qtd:50,preco:115}, {qtd:100,pr
 const FAIXAS_TAGS_TOPPER = [ {qtd:50,preco:20}, {qtd:100,preco:35}, {qtd:200,preco:65}, {qtd:500,preco:140}, {qtd:1000,preco:250} ];
 
 const STICKER_UNITARIO = 2.00;
+const STICKERS_POR_CARTELA = 24;
 const PRECO_TOPO_BOLO = 29.90;
 const PRECO_CARTELA_24_TEMATICOS = 13.90;
 const PRECO_LOGO_VETORIZADA = 24.90;
 const PRECO_FUNKO_PERSONALIZADO = 79.90;
+const PRECO_FUNKO_CASAL = 160.00;
 
 const PRODUCTS = [
   {
@@ -229,7 +231,7 @@ const PRODUCTS = [
     serie: "Adesivo Personalizado",
     precoTipo: "unidade",
     preco: STICKER_UNITARIO,
-    descricao: "Adesivo personalizado para lembrancinha de casamento, com nome e data do casal. Vinil de alta qualidade, resistente à água e UV. Vendido avulso — para grandes quantidades (lembrancinhas de festa), peça a cotação em cartela pelo WhatsApp.",
+    descricao: "Envie sua foto e entre em contato para criarmos juntos!\n\nAdesivo personalizado para lembrancinha de casamento, com nome e data do casal. Vinil de alta qualidade, resistente à água e UV. Vendido avulso — para grandes quantidades (lembrancinhas de festa), peça a cotação em cartela pelo WhatsApp.",
     specs: ["Material: Vinil de alta qualidade", "Personalização: nomes e data", "Resistente à água e UV", "Tamanho aproximado: 6×6 cm", "Vendido por unidade"],
     emoji: "🎨", cor1: "#D4AF37", cor2: "#F5E6C8",
     destaque: false
@@ -245,8 +247,9 @@ const PRODUCTS = [
     serie: "Cartela de Adesivos",
     precoTipo: "faixas",
     faixas: FAIXAS_CARTELA_PADRAO,
-    descricao: "Cartela de adesivos com sua marca, logo ou arte personalizada — como no exemplo da Gaviria Supplies. Corte de precisão e vinil de alta qualidade. Preço por quantidade de cartelas.",
-    specs: ["Material: Vinil de alta qualidade", "Arte enviada pelo cliente ou criada pela Nexus", "Resistente à água e UV", "Preço por faixa de quantidade de cartelas"],
+    faixaUnidade: "cartela",
+    descricao: "Envie sua foto e entre em contato para criarmos juntos!\n\nCartela de adesivos com sua marca, logo ou arte personalizada — como no exemplo da Gaviria Supplies. Corte de precisão e vinil de alta qualidade. Cada cartela vem com 24 adesivos.",
+    specs: ["24 adesivos por cartela", "Material: Vinil de alta qualidade", "Arte enviada pelo cliente ou criada pela Nexus", "Resistente à água e UV", "Preço por faixa de quantidade de cartelas"],
     emoji: "🎨", cor1: "#FF6600", cor2: "#FF8533",
     destaque: true
   },
@@ -260,8 +263,9 @@ const PRODUCTS = [
     serie: "Cartela Holográfica",
     precoTipo: "faixas",
     faixas: FAIXAS_CARTELA_HOLOGRAFICO,
-    descricao: "Adesivo personalizado com efeito holográfico premium — sua arte com brilho e reflexo em arco-íris. Corte de precisão em vinil holográfico de alta qualidade. Preço por quantidade de cartelas.",
-    specs: ["Material: Vinil holográfico", "Efeito arco-íris premium", "Resistente à água e UV", "Preço por faixa de quantidade de cartelas"],
+    faixaUnidade: "cartela",
+    descricao: "Envie sua foto e entre em contato para criarmos juntos!\n\nAdesivo personalizado com efeito holográfico premium — sua arte com brilho e reflexo em arco-íris. Corte de precisão em vinil holográfico de alta qualidade. Cada cartela vem com 24 adesivos.",
+    specs: ["24 adesivos por cartela", "Material: Vinil holográfico", "Efeito arco-íris premium", "Resistente à água e UV", "Preço por faixa de quantidade de cartelas"],
     emoji: "🎨", cor1: "#A855F7", cor2: "#6366F1",
     destaque: true
   },
@@ -275,8 +279,9 @@ const PRODUCTS = [
     serie: "Cartela Transparente",
     precoTipo: "faixas",
     faixas: FAIXAS_CARTELA_TRANSPARENTE,
-    descricao: "Adesivo personalizado em vinil transparente — só a sua arte fica visível, sem fundo branco. Ideal para um acabamento premium em potes, embalagens e vidros. Preço por quantidade de cartelas.",
-    specs: ["Material: Vinil transparente", "Sem fundo branco aparente", "Resistente à água e UV", "Preço por faixa de quantidade de cartelas"],
+    faixaUnidade: "cartela",
+    descricao: "Entre em contato para criarmos juntos!\n\nAdesivo personalizado em vinil transparente — só a sua arte fica visível, sem fundo branco. Ideal para um acabamento premium em potes, embalagens e vidros. Cada cartela vem com 24 adesivos.",
+    specs: ["24 adesivos por cartela", "Material: Vinil transparente", "Sem fundo branco aparente", "Resistente à água e UV", "Preço por faixa de quantidade de cartelas"],
     emoji: "🎨", cor1: "#00B4D8", cor2: "#90E0EF",
     destaque: false
   },
@@ -814,8 +819,8 @@ const PRODUCTS = [
     subcategoria: "casamento",
     serie: "Funko Pop 3D",
     precoTipo: "unico",
-    preco: PRECO_FUNKO_PERSONALIZADO,
-    descricao: "Funko Pop estilo Casal Fantasiados, impresso sob encomenda em PLA de alta qualidade (Bambu Lab A1) com pintura artesanal, no clássico estilo cabeça grande.\n\nMaterial: PLA\nProcesso: Impressão 3D\nProduto decorativo e colecionável",
+    preco: PRECO_FUNKO_CASAL,
+    descricao: "Funko Pop estilo Casal Fantasiados, impresso sob encomenda em PLA de alta qualidade (Bambu Lab A1) com pintura artesanal, no clássico estilo cabeça grande. Peça com duas figuras (casal).\n\nMaterial: PLA\nProcesso: Impressão 3D\nProduto decorativo e colecionável",
     specs: ["Material: PLA de alta qualidade", "Processo: Impressão 3D Bambu Lab A1", "Altura aproximada: ~12 cm (estilo Funko)", "Pintura artesanal", "Produto decorativo"],
     emoji: "🧸", cor1: "#FF4500", cor2: "#FFD700",
     destaque: false
@@ -830,8 +835,8 @@ const PRODUCTS = [
     subcategoria: "casamento",
     serie: "Funko Pop 3D",
     precoTipo: "unico",
-    preco: PRECO_FUNKO_PERSONALIZADO,
-    descricao: "Funko Pop estilo Casamento, impresso sob encomenda em PLA de alta qualidade (Bambu Lab A1) com pintura artesanal, no clássico estilo cabeça grande.\n\nMaterial: PLA\nProcesso: Impressão 3D\nProduto decorativo e colecionável",
+    preco: PRECO_FUNKO_CASAL,
+    descricao: "Funko Pop estilo Casamento, impresso sob encomenda em PLA de alta qualidade (Bambu Lab A1) com pintura artesanal, no clássico estilo cabeça grande. Peça com duas figuras (casal).\n\nMaterial: PLA\nProcesso: Impressão 3D\nProduto decorativo e colecionável",
     specs: ["Material: PLA de alta qualidade", "Processo: Impressão 3D Bambu Lab A1", "Altura aproximada: ~12 cm (estilo Funko)", "Pintura artesanal", "Produto decorativo"],
     emoji: "🧸", cor1: "#FF4500", cor2: "#FFD700",
     destaque: false
@@ -1052,7 +1057,7 @@ const PRODUCTS = [
     subcategoria: "personagens",
     serie: "Funko Pop 3D",
     precoTipo: "unico",
-    preco: PRECO_FUNKO_PERSONALIZADO,
+    preco: 100,
     descricao: "Funko Pop estilo Cerberus, impresso sob encomenda em PLA de alta qualidade (Bambu Lab A1) com pintura artesanal, no clássico estilo cabeça grande.\n\nMaterial: PLA\nProcesso: Impressão 3D\nProduto decorativo e colecionável",
     specs: ["Material: PLA de alta qualidade", "Processo: Impressão 3D Bambu Lab A1", "Altura aproximada: ~12 cm (estilo Funko)", "Pintura artesanal", "Produto decorativo"],
     emoji: "🧸", cor1: "#FF4500", cor2: "#FFD700",
@@ -1068,10 +1073,39 @@ const PRODUCTS = [
     serie: "Cartão de Visita",
     precoTipo: "faixas",
     faixas: FAIXAS_CARTAO_VISITA,
-    descricao: "Cartão de visita personalizado com a identidade do seu negócio — acabamento fosco ou brilhante, papel de alta gramatura. Preço por quantidade de unidades.",
+    descricao: "Entre em contato para criarmos juntos!\n\nCartão de visita personalizado com a identidade do seu negócio — acabamento fosco ou brilhante, papel de alta gramatura. Preço por quantidade de unidades.",
     specs: ["Papel de alta gramatura", "Acabamento fosco ou brilhante", "Arte enviada pelo cliente ou criada pela Nexus", "Preço por faixa de quantidade"],
     emoji: "🪪", cor1: "#2C3E50", cor2: "#3498DB",
     destaque: true
+  },
+
+  {
+    id: "pz-funko-personalizado",
+    nome: "Funko Pop Personalizado",
+    imagem: "images/produtos/funko-pop/aelin/aelin-1.png",
+    imagens: ["images/produtos/funko-pop/aelin/aelin-1.png", "images/produtos/funko-pop/beyonce/beyonce-1.png", "images/produtos/funko-pop/bruxinha/bruxinha-1.png"],
+    categoria: "funko-pop",
+    subcategoria: "servico",
+    serie: "Funko Pop 3D",
+    precoTipo: "unico",
+    preco: PRECO_FUNKO_PERSONALIZADO,
+    descricao: "Envie sua foto e transformamos em funko pop!\n\nFunko Pop personalizado impresso sob encomenda em PLA de alta qualidade (Bambu Lab A1), com pintura artesanal, no clássico estilo cabeça grande. Casais: consulte o valor.",
+    specs: ["Material: PLA de alta qualidade", "Processo: Impressão 3D Bambu Lab A1", "Altura aproximada: ~12 cm (estilo Funko)", "Pintura artesanal", "Produto decorativo"],
+    emoji: "🧸", cor1: "#FF4500", cor2: "#FFD700",
+    destaque: true
+  },
+
+  {
+    id: "pz-caixa-milk-personalizada",
+    nome: "Caixa Milk Personalizada",
+    categoria: "caixas-milk",
+    subcategoria: "personalizada",
+    serie: "Caixa Milk",
+    precoTipo: "orcamento",
+    descricao: "Entre em contato!\n\nCaixa milk no tema que você quiser, com a arte e as cores do seu evento. Impressão em papel couché de alta qualidade (Epson L3250) e corte de precisão (Silhouette Cameo 5).",
+    specs: ["Material: Papel couché 300g", "Impressora Epson L3250", "Corte: Silhouette Cameo 5", "Arte 100% personalizável", "Preço sob orçamento — fale conosco pelo WhatsApp"],
+    emoji: "🎁", cor1: "#2ECC71", cor2: "#27AE60",
+    destaque: false
   },
 
   {
@@ -1825,76 +1859,16 @@ const PRODUCTS = [
   },
 
   {
-    id: "fc-personalizada-neymar",
-    nome: "Figurinha Neymar Personalizada",
-    imagem: "images/produtos/figurinhas-copa/personalizadas/neymar-1.png",
-    imagens: ["images/produtos/figurinhas-copa/personalizadas/neymar-1.png", "images/produtos/figurinhas-copa/personalizadas/neymar-2.png", "images/produtos/figurinhas-copa/personalizadas/neymar-3.png"],
-    categoria: "adesivos",
-    subcategoria: "figurinhas-copa",
-    serie: "Figurinha Personalizada",
-    precoTipo: "unidade",
-    preco: STICKER_UNITARIO,
-    descricao: "Figurinha Figurinha Neymar Personalizada estilo álbum, impressão de alta qualidade e corte de precisão. Vendida avulsa — ótima para álbuns temáticos, troca com amigos ou lembrancinha de festa.",
-    specs: ["Impressão de alta qualidade", "Corte de precisão", "Vendida por unidade", "Ideal para álbuns e trocas"],
-    emoji: "⚽", cor1: "#FFD700", cor2: "#FF8C00",
-    destaque: false
-  },
-
-  {
-    id: "fc-personalizada-1",
-    nome: "Figurinha Personalizada Nº1",
+    id: "fc-personalizada",
+    nome: "Figurinha da Copa Personalizada",
     imagem: "images/produtos/figurinhas-copa/personalizadas/personalizada-1.png",
+    imagens: ["images/produtos/figurinhas-copa/personalizadas/personalizada-1.png", "images/produtos/figurinhas-copa/personalizadas/personalizada-2.png", "images/produtos/figurinhas-copa/personalizadas/personalizada-3.png", "images/produtos/figurinhas-copa/personalizadas/personalizada-4.png", "images/produtos/figurinhas-copa/personalizadas/neymar-1.png", "images/produtos/figurinhas-copa/personalizadas/neymar-2.png", "images/produtos/figurinhas-copa/personalizadas/neymar-3.png"],
     categoria: "adesivos",
     subcategoria: "figurinhas-copa",
     serie: "Figurinha Personalizada",
     precoTipo: "unidade",
     preco: STICKER_UNITARIO,
-    descricao: "Figurinha Figurinha Personalizada Nº1 estilo álbum, impressão de alta qualidade e corte de precisão. Vendida avulsa — ótima para álbuns temáticos, troca com amigos ou lembrancinha de festa.",
-    specs: ["Impressão de alta qualidade", "Corte de precisão", "Vendida por unidade", "Ideal para álbuns e trocas"],
-    emoji: "⚽", cor1: "#FFD700", cor2: "#FF8C00",
-    destaque: false
-  },
-
-  {
-    id: "fc-personalizada-2",
-    nome: "Figurinha Personalizada Nº2",
-    imagem: "images/produtos/figurinhas-copa/personalizadas/personalizada-2.png",
-    categoria: "adesivos",
-    subcategoria: "figurinhas-copa",
-    serie: "Figurinha Personalizada",
-    precoTipo: "unidade",
-    preco: STICKER_UNITARIO,
-    descricao: "Figurinha Figurinha Personalizada Nº2 estilo álbum, impressão de alta qualidade e corte de precisão. Vendida avulsa — ótima para álbuns temáticos, troca com amigos ou lembrancinha de festa.",
-    specs: ["Impressão de alta qualidade", "Corte de precisão", "Vendida por unidade", "Ideal para álbuns e trocas"],
-    emoji: "⚽", cor1: "#FFD700", cor2: "#FF8C00",
-    destaque: false
-  },
-
-  {
-    id: "fc-personalizada-3",
-    nome: "Figurinha Personalizada Nº3",
-    imagem: "images/produtos/figurinhas-copa/personalizadas/personalizada-3.png",
-    categoria: "adesivos",
-    subcategoria: "figurinhas-copa",
-    serie: "Figurinha Personalizada",
-    precoTipo: "unidade",
-    preco: STICKER_UNITARIO,
-    descricao: "Figurinha Figurinha Personalizada Nº3 estilo álbum, impressão de alta qualidade e corte de precisão. Vendida avulsa — ótima para álbuns temáticos, troca com amigos ou lembrancinha de festa.",
-    specs: ["Impressão de alta qualidade", "Corte de precisão", "Vendida por unidade", "Ideal para álbuns e trocas"],
-    emoji: "⚽", cor1: "#FFD700", cor2: "#FF8C00",
-    destaque: false
-  },
-
-  {
-    id: "fc-personalizada-4",
-    nome: "Figurinha Personalizada Nº4",
-    imagem: "images/produtos/figurinhas-copa/personalizadas/personalizada-4.png",
-    categoria: "adesivos",
-    subcategoria: "figurinhas-copa",
-    serie: "Figurinha Personalizada",
-    precoTipo: "unidade",
-    preco: STICKER_UNITARIO,
-    descricao: "Figurinha Figurinha Personalizada Nº4 estilo álbum, impressão de alta qualidade e corte de precisão. Vendida avulsa — ótima para álbuns temáticos, troca com amigos ou lembrancinha de festa.",
+    descricao: "Envie sua foto e entre em contato para criarmos juntos!\n\nFigurinha personalizada estilo álbum de copa, com a sua foto ou de quem você quiser. Impressão de alta qualidade e corte de precisão.",
     specs: ["Impressão de alta qualidade", "Corte de precisão", "Vendida por unidade", "Ideal para álbuns e trocas"],
     emoji: "⚽", cor1: "#FFD700", cor2: "#FF8C00",
     destaque: false
@@ -1902,15 +1876,15 @@ const PRODUCTS = [
 
   {
     id: "fc-pet-personalizado",
-    nome: "Figurinha Pet Personalizado",
+    nome: "Figurinha da Copa com seu Pet Personalizada",
     imagem: "images/produtos/figurinhas-copa/pets/pet-personalizado-1.png",
     imagens: ["images/produtos/figurinhas-copa/pets/pet-personalizado-1.png", "images/produtos/figurinhas-copa/pets/pet-personalizado-2.png", "images/produtos/figurinhas-copa/pets/pet-personalizado-3.png", "images/produtos/figurinhas-copa/pets/pet-personalizado-4.png", "images/produtos/figurinhas-copa/pets/pet-personalizado-5.png", "images/produtos/figurinhas-copa/pets/pet-personalizado-6.png", "images/produtos/figurinhas-copa/pets/pet-personalizado-7.png"],
     categoria: "adesivos",
     subcategoria: "figurinhas-copa",
-    serie: "Figurinha Pet",
+    serie: "Figurinha Personalizada",
     precoTipo: "unidade",
     preco: STICKER_UNITARIO,
-    descricao: "Figurinha Figurinha Pet Personalizado estilo álbum, impressão de alta qualidade e corte de precisão. Vendida avulsa — ótima para álbuns temáticos, troca com amigos ou lembrancinha de festa.",
+    descricao: "Envie sua foto e entre em contato para criarmos juntos!\n\nFigurinha personalizada estilo álbum de copa com a foto do seu pet. Impressão de alta qualidade e corte de precisão.",
     specs: ["Impressão de alta qualidade", "Corte de precisão", "Vendida por unidade", "Ideal para álbuns e trocas"],
     emoji: "⚽", cor1: "#FFD700", cor2: "#FF8C00",
     destaque: false
@@ -2124,12 +2098,12 @@ function getProductById(id) {
   return PRODUCTS.find(p => p.id === id);
 }
 
-/* Página "Personalizados" — reúne os 4 tipos de produto sob encomenda */
+/* Página "Personalizados" — lista curada de produtos sob encomenda */
 function getCartoesPersonalizados() {
   return PRODUCTS.filter(p => p.categoria === 'cartoes');
 }
 function getFunkosPersonalizados() {
-  return PRODUCTS.filter(p => p.categoria === 'funko-pop');
+  return PRODUCTS.filter(p => p.id === 'pz-funko-personalizado');
 }
 function getAdesivosPersonalizados() {
   return getProductsBySubcategory('adesivos', 'personalizados');
@@ -2137,6 +2111,9 @@ function getAdesivosPersonalizados() {
 function getFigurinhasPersonalizadas() {
   return PRODUCTS.filter(p => p.categoria === 'adesivos' && p.subcategoria === 'figurinhas-copa'
     && (p.id.indexOf('fc-personalizada') === 0 || p.id.indexOf('fc-pet') === 0));
+}
+function getCaixaMilkPersonalizada() {
+  return PRODUCTS.filter(p => p.categoria === 'caixas-milk' && p.subcategoria === 'personalizada');
 }
 
 function formatPrice(val) {

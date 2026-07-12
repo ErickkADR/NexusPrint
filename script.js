@@ -59,6 +59,7 @@ if (fadeEls.length) {
 // ─── GALERIA PRODUTO ───────────────────────────
 // Mostra só as imagens reais do produto (1 a N) — nunca completa com emoji.
 function renderGallery(p) {
+  const galleryCol = document.querySelector('.gallery-col');
   const thumbsWrap = document.getElementById('gallery-thumbs-v');
   const mainImg = document.getElementById('gallery-main-img');
   const mainEmoji = document.getElementById('gallery-main-emoji');
@@ -69,6 +70,7 @@ function renderGallery(p) {
   if (!imgs.length) {
     thumbsWrap.innerHTML = '';
     thumbsWrap.style.display = 'none';
+    if (galleryCol) galleryCol.classList.add('no-thumbs');
     mainImg.style.display = 'none';
     mainEmoji.style.setProperty('--c1', p.cor1);
     mainEmoji.style.setProperty('--c2', p.cor2);
@@ -84,9 +86,11 @@ function renderGallery(p) {
   if (imgs.length === 1) {
     thumbsWrap.innerHTML = '';
     thumbsWrap.style.display = 'none';
+    if (galleryCol) galleryCol.classList.add('no-thumbs');
     return;
   }
 
+  if (galleryCol) galleryCol.classList.remove('no-thumbs');
   thumbsWrap.style.display = 'flex';
   thumbsWrap.innerHTML = imgs.map((src, i) => `
     <div class="gallery-thumb-v${i === 0 ? ' active' : ''}" data-img="${src}">
@@ -136,15 +140,27 @@ function renderPurchaseArea(p) {
   if (waBtn) { waBtn.classList.add('btn-secondary'); waBtn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Comprar Agora'; }
 
   if (p.precoTipo === 'faixas') {
-    priceWrap.innerHTML = `<span class="product-price-from">a partir de</span> <span class="product-detail-price">${formatPrice(p.faixas[0].preco)}</span>`;
+    const isCartela = p.faixaUnidade === 'cartela';
+    const qtdLabel = f => isCartela
+      ? `${f.qtd} ${f.qtd === 1 ? 'cartela' : 'cartelas'}`
+      : `${f.qtd} ${f.qtd === 1 ? 'unidade' : 'unidades'}`;
+    const priceLineLabel = f => {
+      const porCartela = formatPrice(f.preco / f.qtd);
+      if (!isCartela) return `${porCartela} /un`;
+      const porAdesivo = formatPrice((f.preco / f.qtd) / STICKERS_POR_CARTELA);
+      return `${porCartela} /cartela · ${porAdesivo} /adesivo`;
+    };
+
+    priceWrap.innerHTML = `<span class="product-price-from">${isCartela ? 'a cartela, a partir de' : 'a partir de'}</span> <span class="product-detail-price">${formatPrice(p.faixas[0].preco)}</span>`;
     let selected = 0;
     const renderTiers = () => {
       purchaseArea.innerHTML = `
+        ${isCartela ? `<div class="product-detail-total" style="margin-bottom:12px;">Cada cartela vem com <strong>${STICKERS_POR_CARTELA} adesivos</strong>.</div>` : ''}
         <div class="price-tier-table">
           ${p.faixas.map((f, i) => `
             <div class="price-tier-row ${i === selected ? 'active' : ''}" data-i="${i}">
-              <span class="price-tier-qtd">${f.qtd} ${f.qtd === 1 ? 'unidade' : 'unidades'}</span>
-              <span class="price-tier-unit">${formatPrice(f.preco / f.qtd)} /un</span>
+              <span class="price-tier-qtd">${qtdLabel(f)}</span>
+              <span class="price-tier-unit">${priceLineLabel(f)}</span>
               <span class="price-tier-total">${formatPrice(f.preco)}</span>
             </div>`).join('')}
         </div>
@@ -156,7 +172,7 @@ function renderPurchaseArea(p) {
       });
       document.getElementById('add-cart-btn').addEventListener('click', () => {
         const f = p.faixas[selected];
-        cartAdd({ id: p.id, nome: p.nome, imagem: p.imagem, emoji: p.emoji, precoUnit: f.preco, qtd: 1, faixaLabel: `${f.qtd} ${f.qtd === 1 ? 'unidade' : 'unidades'}` });
+        cartAdd({ id: p.id, nome: p.nome, imagem: p.imagem, emoji: p.emoji, precoUnit: f.preco, qtd: 1, faixaLabel: qtdLabel(f) });
       });
     };
     renderTiers();
@@ -257,6 +273,7 @@ function initPersonalizadosPage() {
     { id: 'grid-personalizados-funko', fn: getFunkosPersonalizados },
     { id: 'grid-personalizados-adesivos', fn: getAdesivosPersonalizados },
     { id: 'grid-personalizados-figurinhas', fn: getFigurinhasPersonalizadas },
+    { id: 'grid-personalizados-caixamilk', fn: getCaixaMilkPersonalizada },
   ];
   sections.forEach(({ id, fn }) => {
     const el = document.getElementById(id);

@@ -1111,6 +1111,15 @@ header {
   align-items: start;
 }
 
+/* Sem miniaturas (produto com 1 imagem só): a imagem principal ocupa tudo */
+.gallery-col.no-thumbs { grid-template-columns: 1fr; }
+
+/* Garante que a imagem principal fique sempre na 2ª coluna, mesmo quando a
+   coluna de miniaturas está com display:none (senão o grid recoloca a imagem
+   principal na 1ª coluna de 86px e ela fica minúscula). */
+.gallery-main-v { grid-column: 2; }
+.gallery-col.no-thumbs .gallery-main-v { grid-column: 1; }
+
 .gallery-thumbs-v {
   display: flex;
   flex-direction: column;
@@ -1118,7 +1127,10 @@ header {
   max-height: 520px;
   overflow-y: auto;
   padding-right: 2px;
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* Edge legado */
 }
+.gallery-thumbs-v::-webkit-scrollbar { display: none; }
 
 .gallery-thumb-v {
   width: 86px;

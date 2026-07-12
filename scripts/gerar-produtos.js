@@ -95,6 +95,7 @@ function productToJs(p) {
   l.push(`    precoTipo: ${jsStr(p.precoTipo)},`);
   if (p.precoTipo === 'faixas') {
     l.push(`    faixas: ${p.faixasConst},`);
+    if (p.faixaUnidade) l.push(`    faixaUnidade: ${jsStr(p.faixaUnidade)},`);
   } else if (p.precoTipo !== 'orcamento') {
     l.push(`    preco: ${p.precoConst || p.preco},`);
   }
@@ -165,7 +166,7 @@ function addProduct(p) {
     imagem: casamentoImgs[0], imagens: casamentoImgs,
     categoria: 'adesivos', subcategoria: 'personalizados', serie: 'Adesivo Personalizado',
     precoTipo: 'unidade', precoConst: 'STICKER_UNITARIO',
-    descricao: 'Adesivo personalizado para lembrancinha de casamento, com nome e data do casal. Vinil de alta qualidade, resistente à água e UV. Vendido avulso — para grandes quantidades (lembrancinhas de festa), peça a cotação em cartela pelo WhatsApp.',
+    descricao: 'Envie sua foto e entre em contato para criarmos juntos!\n\nAdesivo personalizado para lembrancinha de casamento, com nome e data do casal. Vinil de alta qualidade, resistente à água e UV. Vendido avulso — para grandes quantidades (lembrancinhas de festa), peça a cotação em cartela pelo WhatsApp.',
     specs: ['Material: Vinil de alta qualidade', 'Personalização: nomes e data', 'Resistente à água e UV', 'Tamanho aproximado: 6×6 cm', 'Vendido por unidade'],
     emoji: st.emoji, cor1: '#D4AF37', cor2: '#F5E6C8', destaque: false,
   });
@@ -176,9 +177,9 @@ function addProduct(p) {
     id: 'ad-cartela-personalizados', nome: 'Cartela de Adesivos Personalizados',
     imagem: gaviriaImgs[0], imagens: gaviriaImgs,
     categoria: 'adesivos', subcategoria: 'personalizados', serie: 'Cartela de Adesivos',
-    precoTipo: 'faixas', faixasConst: 'FAIXAS_CARTELA_PADRAO',
-    descricao: 'Cartela de adesivos com sua marca, logo ou arte personalizada — como no exemplo da Gaviria Supplies. Corte de precisão e vinil de alta qualidade. Preço por quantidade de cartelas.',
-    specs: ['Material: Vinil de alta qualidade', 'Arte enviada pelo cliente ou criada pela Nexus', 'Resistente à água e UV', 'Preço por faixa de quantidade de cartelas'],
+    precoTipo: 'faixas', faixasConst: 'FAIXAS_CARTELA_PADRAO', faixaUnidade: 'cartela',
+    descricao: 'Envie sua foto e entre em contato para criarmos juntos!\n\nCartela de adesivos com sua marca, logo ou arte personalizada — como no exemplo da Gaviria Supplies. Corte de precisão e vinil de alta qualidade. Cada cartela vem com 24 adesivos.',
+    specs: [`24 adesivos por cartela`, 'Material: Vinil de alta qualidade', 'Arte enviada pelo cliente ou criada pela Nexus', 'Resistente à água e UV', 'Preço por faixa de quantidade de cartelas'],
     emoji: st.emoji, cor1: st.cor1, cor2: st.cor2, destaque: true,
   });
 
@@ -187,9 +188,9 @@ function addProduct(p) {
     id: 'ad-holografico-personalizado', nome: 'Adesivo Holográfico Personalizado',
     imagem: holoImg,
     categoria: 'adesivos', subcategoria: 'personalizados', serie: 'Cartela Holográfica',
-    precoTipo: 'faixas', faixasConst: 'FAIXAS_CARTELA_HOLOGRAFICO',
-    descricao: 'Adesivo personalizado com efeito holográfico premium — sua arte com brilho e reflexo em arco-íris. Corte de precisão em vinil holográfico de alta qualidade. Preço por quantidade de cartelas.',
-    specs: ['Material: Vinil holográfico', 'Efeito arco-íris premium', 'Resistente à água e UV', 'Preço por faixa de quantidade de cartelas'],
+    precoTipo: 'faixas', faixasConst: 'FAIXAS_CARTELA_HOLOGRAFICO', faixaUnidade: 'cartela',
+    descricao: 'Envie sua foto e entre em contato para criarmos juntos!\n\nAdesivo personalizado com efeito holográfico premium — sua arte com brilho e reflexo em arco-íris. Corte de precisão em vinil holográfico de alta qualidade. Cada cartela vem com 24 adesivos.',
+    specs: [`24 adesivos por cartela`, 'Material: Vinil holográfico', 'Efeito arco-íris premium', 'Resistente à água e UV', 'Preço por faixa de quantidade de cartelas'],
     emoji: st.emoji, cor1: '#A855F7', cor2: '#6366F1', destaque: true,
   });
 
@@ -198,9 +199,9 @@ function addProduct(p) {
     id: 'ad-transparente-personalizado', nome: 'Adesivo Transparente Personalizado',
     imagem: transpImg,
     categoria: 'adesivos', subcategoria: 'personalizados', serie: 'Cartela Transparente',
-    precoTipo: 'faixas', faixasConst: 'FAIXAS_CARTELA_TRANSPARENTE',
-    descricao: 'Adesivo personalizado em vinil transparente — só a sua arte fica visível, sem fundo branco. Ideal para um acabamento premium em potes, embalagens e vidros. Preço por quantidade de cartelas.',
-    specs: ['Material: Vinil transparente', 'Sem fundo branco aparente', 'Resistente à água e UV', 'Preço por faixa de quantidade de cartelas'],
+    precoTipo: 'faixas', faixasConst: 'FAIXAS_CARTELA_TRANSPARENTE', faixaUnidade: 'cartela',
+    descricao: 'Entre em contato para criarmos juntos!\n\nAdesivo personalizado em vinil transparente — só a sua arte fica visível, sem fundo branco. Ideal para um acabamento premium em potes, embalagens e vidros. Cada cartela vem com 24 adesivos.',
+    specs: [`24 adesivos por cartela`, 'Material: Vinil transparente', 'Sem fundo branco aparente', 'Resistente à água e UV', 'Preço por faixa de quantidade de cartelas'],
     emoji: st.emoji, cor1: '#00B4D8', cor2: '#90E0EF', destaque: false,
   });
 
@@ -309,20 +310,24 @@ function addProduct(p) {
   const st = STYLE['funko-pop'];
   const baseDir = path.join(SRC, '3D/Funko Pop');
   const folders = naturalSort(fs.readdirSync(baseDir).filter(f => fs.statSync(path.join(baseDir, f)).isDirectory()));
-  const CASAMENTO = new Set(['Casamento', 'Noiva', 'Noivo', 'Casal Fantasiados']);
+  // "Casal" = produtos com duas pessoas na mesma peça (preço maior). Noiva/Noivo
+  // sozinhos continuam com o preço individual normal.
+  const CASAL = new Set(['Casamento', 'Casal Fantasiados']);
+  const CASAMENTO_SUB = new Set(['Casamento', 'Noiva', 'Noivo', 'Casal Fantasiados']);
   const FAMOSOS = new Set(['Beyonce', 'Neymar', 'Neymar Santos', 'Tyler The Creator', 'Jogadora Tenis']);
   folders.forEach(folder => {
     const slug = slugify(folder);
     const srcDir = path.join(baseDir, folder);
     const destDir = path.join(IMG_DEST_ROOT, 'funko-pop', slug);
     const imgs = listPngs(srcDir).map(f => toSiteRelative(copyInto(path.join(srcDir, f), destDir)));
-    const sub = CASAMENTO.has(folder) ? 'casamento' : FAMOSOS.has(folder) ? 'famosos' : 'personagens';
+    const sub = CASAMENTO_SUB.has(folder) ? 'casamento' : FAMOSOS.has(folder) ? 'famosos' : 'personagens';
+    const isCasal = CASAL.has(folder);
     addProduct({
       id: `fp-${slug}`, nome: folder,
       imagem: imgs[0], imagens: imgs,
       categoria: 'funko-pop', subcategoria: sub, serie: 'Funko Pop 3D',
-      precoTipo: 'unico', precoConst: 'PRECO_FUNKO_PERSONALIZADO',
-      descricao: `Funko Pop estilo ${folder}, impresso sob encomenda em PLA de alta qualidade (Bambu Lab A1) com pintura artesanal, no clássico estilo cabeça grande.\n\nMaterial: PLA\nProcesso: Impressão 3D\nProduto decorativo e colecionável`,
+      precoTipo: 'unico', precoConst: isCasal ? 'PRECO_FUNKO_CASAL' : 'PRECO_FUNKO_PERSONALIZADO',
+      descricao: `Funko Pop estilo ${folder}, impresso sob encomenda em PLA de alta qualidade (Bambu Lab A1) com pintura artesanal, no clássico estilo cabeça grande.${isCasal ? ' Peça com duas figuras (casal).' : ''}\n\nMaterial: PLA\nProcesso: Impressão 3D\nProduto decorativo e colecionável`,
       specs: ['Material: PLA de alta qualidade', 'Processo: Impressão 3D Bambu Lab A1', 'Altura aproximada: ~12 cm (estilo Funko)', 'Pintura artesanal', 'Produto decorativo'],
       emoji: st.emoji, cor1: st.cor1, cor2: st.cor2, destaque: false,
     });
@@ -336,7 +341,7 @@ function addProduct(p) {
     id: 'fp-cerberus', nome: 'Cerberus',
     imagem: cerbImgs[0], imagens: cerbImgs,
     categoria: 'funko-pop', subcategoria: 'personagens', serie: 'Funko Pop 3D',
-    precoTipo: 'unico', precoConst: 'PRECO_FUNKO_PERSONALIZADO',
+    precoTipo: 'unico', preco: 100.00,
     descricao: 'Funko Pop estilo Cerberus, impresso sob encomenda em PLA de alta qualidade (Bambu Lab A1) com pintura artesanal, no clássico estilo cabeça grande.\n\nMaterial: PLA\nProcesso: Impressão 3D\nProduto decorativo e colecionável',
     specs: ['Material: PLA de alta qualidade', 'Processo: Impressão 3D Bambu Lab A1', 'Altura aproximada: ~12 cm (estilo Funko)', 'Pintura artesanal', 'Produto decorativo'],
     emoji: st.emoji, cor1: st.cor1, cor2: st.cor2, destaque: false,
@@ -354,9 +359,41 @@ function addProduct(p) {
     imagem: img,
     categoria: 'cartoes', subcategoria: 'personalizados', serie: 'Cartão de Visita',
     precoTipo: 'faixas', faixasConst: 'FAIXAS_CARTAO_VISITA',
-    descricao: 'Cartão de visita personalizado com a identidade do seu negócio — acabamento fosco ou brilhante, papel de alta gramatura. Preço por quantidade de unidades.',
+    descricao: 'Entre em contato para criarmos juntos!\n\nCartão de visita personalizado com a identidade do seu negócio — acabamento fosco ou brilhante, papel de alta gramatura. Preço por quantidade de unidades.',
     specs: ['Papel de alta gramatura', 'Acabamento fosco ou brilhante', 'Arte enviada pelo cliente ou criada pela Nexus', 'Preço por faixa de quantidade'],
     emoji: st.emoji, cor1: st.cor1, cor2: st.cor2, destaque: true,
+  });
+})();
+
+/* ═══════════════════ SERVIÇOS PERSONALIZADOS (só aparecem na página Personalizados) ═══════════════════ */
+(function personalizadosServicos() {
+  // Funko Pop Personalizado — serviço genérico (os funkos individuais continuam
+  // listados em Funko Pop; aqui é só o card de "encomende o seu").
+  const fpSt = STYLE['funko-pop'];
+  const fpExemplos = ['fp-aelin', 'fp-beyonce', 'fp-bruxinha']
+    .map(id => PRODUCTS.find(p => p.id === id))
+    .filter(Boolean)
+    .map(p => p.imagem);
+  addProduct({
+    id: 'pz-funko-personalizado', nome: 'Funko Pop Personalizado',
+    imagem: fpExemplos[0],
+    imagens: fpExemplos,
+    categoria: 'funko-pop', subcategoria: 'servico', serie: 'Funko Pop 3D',
+    precoTipo: 'unico', precoConst: 'PRECO_FUNKO_PERSONALIZADO',
+    descricao: 'Envie sua foto e transformamos em funko pop!\n\nFunko Pop personalizado impresso sob encomenda em PLA de alta qualidade (Bambu Lab A1), com pintura artesanal, no clássico estilo cabeça grande. Casais: consulte o valor.',
+    specs: ['Material: PLA de alta qualidade', 'Processo: Impressão 3D Bambu Lab A1', 'Altura aproximada: ~12 cm (estilo Funko)', 'Pintura artesanal', 'Produto decorativo'],
+    emoji: fpSt.emoji, cor1: fpSt.cor1, cor2: fpSt.cor2, destaque: true,
+  });
+
+  // Caixa Milk Personalizada — serviço sob orçamento (não tem foto própria ainda)
+  const cmSt = STYLE['caixas-milk'];
+  addProduct({
+    id: 'pz-caixa-milk-personalizada', nome: 'Caixa Milk Personalizada',
+    categoria: 'caixas-milk', subcategoria: 'personalizada', serie: 'Caixa Milk',
+    precoTipo: 'orcamento',
+    descricao: 'Entre em contato!\n\nCaixa milk no tema que você quiser, com a arte e as cores do seu evento. Impressão em papel couché de alta qualidade (Epson L3250) e corte de precisão (Silhouette Cameo 5).',
+    specs: ['Material: Papel couché 300g', 'Impressora Epson L3250', 'Corte: Silhouette Cameo 5', 'Arte 100% personalizável', 'Preço sob orçamento — fale conosco pelo WhatsApp'],
+    emoji: '🎁', cor1: cmSt.cor1, cor2: cmSt.cor2, destaque: false,
   });
 })();
 
@@ -367,12 +404,12 @@ function addProduct(p) {
 
   // categoria fica 'adesivos' (subcategoria única 'figurinhas-copa') — a "série"
   // (Figurinha Anime / Blue Lock / etc) continua diferenciando o tipo no card.
-  function addFigurinha(id, nome, imgs, serie) {
+  function addFigurinha(id, nome, imgs, serie, descricaoOverride) {
     addProduct({
       id, nome, imagem: imgs[0], imagens: imgs,
       categoria: 'adesivos', subcategoria: 'figurinhas-copa', serie,
       precoTipo: 'unidade', precoConst: 'STICKER_UNITARIO',
-      descricao: `Figurinha ${nome} estilo álbum, impressão de alta qualidade e corte de precisão. Vendida avulsa — ótima para álbuns temáticos, troca com amigos ou lembrancinha de festa.`,
+      descricao: descricaoOverride || `Figurinha ${nome} estilo álbum, impressão de alta qualidade e corte de precisão. Vendida avulsa — ótima para álbuns temáticos, troca com amigos ou lembrancinha de festa.`,
       specs: ['Impressão de alta qualidade', 'Corte de precisão', 'Vendida por unidade', 'Ideal para álbuns e trocas'],
       emoji: st.emoji, cor1: st.cor1, cor2: st.cor2, destaque: false,
     });
@@ -407,22 +444,26 @@ function addProduct(p) {
     addFigurinha(`fc-op-${n}`, `Figurinha One Piece Nº${n}`, [dest], 'Figurinha One Piece');
   });
 
-  // Personalizadas: neymar (galeria) + genéricas
+  // Personalizadas: um único produto consolidado com todos os exemplos (neymar + genéricas)
   const persDir = path.join(base, 'Personalizadas');
   const destPersFc = path.join(IMG_DEST_ROOT, 'figurinhas-copa/personalizadas');
-  const neymarImgs = ['neymar-1.png', 'neymar-2.png', 'neymar-3.png'].map(f => toSiteRelative(copyInto(path.join(persDir, f), destPersFc)));
-  addFigurinha('fc-personalizada-neymar', 'Figurinha Neymar Personalizada', neymarImgs, 'Figurinha Personalizada');
-  ['personalizada-1.png', 'personalizada-2.png', 'personalizada-3.png', 'personalizada-4.png'].forEach(file => {
-    const n = file.match(/(\d+)/)?.[1] || '';
-    const dest = toSiteRelative(copyInto(path.join(persDir, file), destPersFc));
-    addFigurinha(`fc-personalizada-${n}`, `Figurinha Personalizada Nº${n}`, [dest], 'Figurinha Personalizada');
-  });
+  const personalizadaImgs = [
+    'personalizada-1.png', 'personalizada-2.png', 'personalizada-3.png', 'personalizada-4.png',
+    'neymar-1.png', 'neymar-2.png', 'neymar-3.png',
+  ].map(f => toSiteRelative(copyInto(path.join(persDir, f), destPersFc)));
+  addFigurinha(
+    'fc-personalizada', 'Figurinha da Copa Personalizada', personalizadaImgs, 'Figurinha Personalizada',
+    'Envie sua foto e entre em contato para criarmos juntos!\n\nFigurinha personalizada estilo álbum de copa, com a sua foto ou de quem você quiser. Impressão de alta qualidade e corte de precisão.'
+  );
 
   // Pets Personalizados (galeria única — exemplos do serviço)
   const petsDir = path.join(base, 'Pets Personalizados');
   const destPets = path.join(IMG_DEST_ROOT, 'figurinhas-copa/pets');
   const petsImgs = listPngs(petsDir).map(f => toSiteRelative(copyInto(path.join(petsDir, f), destPets)));
-  addFigurinha('fc-pet-personalizado', 'Figurinha Pet Personalizado', petsImgs, 'Figurinha Pet');
+  addFigurinha(
+    'fc-pet-personalizado', 'Figurinha da Copa com seu Pet Personalizada', petsImgs, 'Figurinha Personalizada',
+    'Envie sua foto e entre em contato para criarmos juntos!\n\nFigurinha personalizada estilo álbum de copa com a foto do seu pet. Impressão de alta qualidade e corte de precisão.'
+  );
 })();
 
 /* ═══════════════════ TOPO DE BOLO (mantém fotos atuais, preço do flyer) ═══════════════════ */
@@ -496,10 +537,12 @@ const FAIXAS_CAIXINHAS = [ {qtd:10,preco:24.90}, {qtd:50,preco:115}, {qtd:100,pr
 const FAIXAS_TAGS_TOPPER = [ {qtd:50,preco:20}, {qtd:100,preco:35}, {qtd:200,preco:65}, {qtd:500,preco:140}, {qtd:1000,preco:250} ];
 
 const STICKER_UNITARIO = 2.00;
+const STICKERS_POR_CARTELA = 24;
 const PRECO_TOPO_BOLO = 29.90;
 const PRECO_CARTELA_24_TEMATICOS = 13.90;
 const PRECO_LOGO_VETORIZADA = 24.90;
 const PRECO_FUNKO_PERSONALIZADO = 79.90;
+const PRECO_FUNKO_CASAL = 160.00;
 
 const PRODUCTS = [
 `;
@@ -535,12 +578,12 @@ function getProductById(id) {
   return PRODUCTS.find(p => p.id === id);
 }
 
-/* Página "Personalizados" — reúne os 4 tipos de produto sob encomenda */
+/* Página "Personalizados" — lista curada de produtos sob encomenda */
 function getCartoesPersonalizados() {
   return PRODUCTS.filter(p => p.categoria === 'cartoes');
 }
 function getFunkosPersonalizados() {
-  return PRODUCTS.filter(p => p.categoria === 'funko-pop');
+  return PRODUCTS.filter(p => p.id === 'pz-funko-personalizado');
 }
 function getAdesivosPersonalizados() {
   return getProductsBySubcategory('adesivos', 'personalizados');
@@ -548,6 +591,9 @@ function getAdesivosPersonalizados() {
 function getFigurinhasPersonalizadas() {
   return PRODUCTS.filter(p => p.categoria === 'adesivos' && p.subcategoria === 'figurinhas-copa'
     && (p.id.indexOf('fc-personalizada') === 0 || p.id.indexOf('fc-pet') === 0));
+}
+function getCaixaMilkPersonalizada() {
+  return PRODUCTS.filter(p => p.categoria === 'caixas-milk' && p.subcategoria === 'personalizada');
 }
 
 function formatPrice(val) {
