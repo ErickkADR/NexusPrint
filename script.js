@@ -268,17 +268,16 @@ function renderSubsections() {
 
 // ─── INICIALIZAÇÃO PERSONALIZADOS ─────────────
 function initPersonalizadosPage() {
-  const sections = [
-    { id: 'grid-personalizados-cartoes', fn: getCartoesPersonalizados },
-    { id: 'grid-personalizados-funko', fn: getFunkosPersonalizados },
-    { id: 'grid-personalizados-adesivos', fn: getAdesivosPersonalizados },
-    { id: 'grid-personalizados-figurinhas', fn: getFigurinhasPersonalizadas },
-    { id: 'grid-personalizados-caixamilk', fn: getCaixaMilkPersonalizada },
+  const grid = document.getElementById('grid-personalizados');
+  if (!grid) return;
+  const produtos = [
+    ...getCartoesPersonalizados(),
+    ...getFunkosPersonalizados(),
+    ...getAdesivosPersonalizados(),
+    ...getFigurinhasPersonalizadas(),
+    ...getCaixaMilkPersonalizada(),
   ];
-  sections.forEach(({ id, fn }) => {
-    const el = document.getElementById(id);
-    if (el) el.innerHTML = fn().map(renderProductCard).join('');
-  });
+  grid.innerHTML = produtos.map(renderProductCard).join('');
 }
 
 // ─── BOOT ──────────────────────────────────────
