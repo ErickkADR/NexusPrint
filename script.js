@@ -57,64 +57,47 @@ if (fadeEls.length) {
 })();
 
 // ─── GALERIA PRODUTO ───────────────────────────
-function initGallery() {
-  const thumbs = document.querySelectorAll('.gallery-thumb-v');
+// Mostra só as imagens reais do produto (1 a N) — nunca completa com emoji.
+function renderGallery(p) {
+  const thumbsWrap = document.getElementById('gallery-thumbs-v');
   const mainImg = document.getElementById('gallery-main-img');
   const mainEmoji = document.getElementById('gallery-main-emoji');
+  if (!thumbsWrap || !mainImg || !mainEmoji) return;
 
-  if (!thumbs.length) return;
+  const imgs = (p.imagens && p.imagens.length) ? p.imagens : (p.imagem ? [p.imagem] : []);
 
-  thumbs.forEach((thumb, i) => {
+  if (!imgs.length) {
+    thumbsWrap.innerHTML = '';
+    thumbsWrap.style.display = 'none';
+    mainImg.style.display = 'none';
+    mainEmoji.style.setProperty('--c1', p.cor1);
+    mainEmoji.style.setProperty('--c2', p.cor2);
+    mainEmoji.textContent = p.emoji;
+    mainEmoji.style.display = 'flex';
+    return;
+  }
+
+  mainEmoji.style.display = 'none';
+  mainImg.style.display = 'block';
+  mainImg.src = imgs[0];
+
+  if (imgs.length === 1) {
+    thumbsWrap.innerHTML = '';
+    thumbsWrap.style.display = 'none';
+    return;
+  }
+
+  thumbsWrap.style.display = 'flex';
+  thumbsWrap.innerHTML = imgs.map((src, i) => `
+    <div class="gallery-thumb-v${i === 0 ? ' active' : ''}" data-img="${src}">
+      <img src="${src}" alt="${p.nome}">
+    </div>`).join('');
+
+  thumbsWrap.querySelectorAll('.gallery-thumb-v').forEach(thumb => {
     thumb.addEventListener('click', () => {
-      thumbs.forEach(t => t.classList.remove('active'));
+      thumbsWrap.querySelectorAll('.gallery-thumb-v').forEach(t => t.classList.remove('active'));
       thumb.classList.add('active');
-
-      const imgSrc = thumb.dataset.img;
-      const emoji = thumb.dataset.emoji;
-      const c1 = thumb.dataset.c1;
-      const c2 = thumb.dataset.c2;
-
-      if (imgSrc && mainImg) {
-        mainImg.src = imgSrc;
-        mainImg.style.display = 'block';
-        if (mainEmoji) mainEmoji.style.display = 'none';
-      } else if (mainEmoji) {
-        mainEmoji.style.setProperty('--c1', c1);
-        mainEmoji.style.setProperty('--c2', c2);
-        mainEmoji.textContent = emoji;
-        mainEmoji.style.display = 'flex';
-        if (mainImg) mainImg.style.display = 'none';
-      }
-    });
-  });
-}
-
-// ─── FILTER TABS ───────────────────────────────
-function initFilterTabs() {
-  const tabs = document.querySelectorAll('.filter-tab');
-  if (!tabs.length) return;
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const filter = tab.dataset.filter;
-      renderCategoryFilter(filter);
-    });
-  });
-}
-
-function renderCategoryFilter(filter) {
-  const grid = document.getElementById('products-grid');
-  if (!grid || typeof PRODUCTS === 'undefined') return;
-  const cat = grid.dataset.cat;
-  const products = filter === 'all'
-    ? getProductsByCategory(cat)
-    : getProductsBySubcategory(cat, filter);
-  grid.innerHTML = products.map(renderProductCard).join('');
-  requestAnimationFrame(() => {
-    grid.querySelectorAll('.product-card').forEach((el, i) => {
-      setTimeout(() => el.style.opacity = '1', i * 40);
+      mainImg.src = thumb.dataset.img;
     });
   });
 }
@@ -150,7 +133,7 @@ function renderPurchaseArea(p) {
     return;
   }
 
-  if (waBtn) { waBtn.classList.add('btn-secondary'); waBtn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Tirar dúvidas'; }
+  if (waBtn) { waBtn.classList.add('btn-secondary'); waBtn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Comprar Agora'; }
 
   if (p.precoTipo === 'faixas') {
     priceWrap.innerHTML = `<span class="product-price-from">a partir de</span> <span class="product-detail-price">${formatPrice(p.faixas[0].preco)}</span>`;
@@ -237,55 +220,17 @@ function initProductPage() {
   const specsEl = document.getElementById('product-specs');
   if (specsEl) specsEl.innerHTML = p.specs.map(s => `<li><i class="fa-solid fa-check"></i>${s}</li>`).join('');
 
-  // Galeria: usa array imagens se existir, senão repete imagem 3x como placeholder
-  const imgs = (p.imagens && p.imagens.length) ? p.imagens : [p.imagem, p.imagem, p.imagem];
-
-  const mainImg = document.getElementById('gallery-main-img');
-  const mainEmoji = document.getElementById('gallery-main-emoji');
-
-  if (imgs[0] && mainImg) {
-    mainImg.src = imgs[0];
-    mainImg.style.display = 'block';
-    if (mainEmoji) mainEmoji.style.display = 'none';
-  } else if (mainEmoji) {
-    mainEmoji.style.setProperty('--c1', p.cor1);
-    mainEmoji.style.setProperty('--c2', p.cor2);
-    mainEmoji.textContent = p.emoji;
-  }
-
-  const thumbEls = document.querySelectorAll('.gallery-thumb-v');
-  const angles = ['135deg', '225deg', '315deg'];
-
-  thumbEls.forEach((thumb, i) => {
-    const imgSrc = imgs[i];
-    thumb.dataset.img = imgSrc || '';
-    thumb.dataset.emoji = p.emoji;
-    thumb.dataset.c1 = p.cor1;
-    thumb.dataset.c2 = p.cor2;
-    if (imgSrc) {
-      thumb.innerHTML = `<img src="${imgSrc}" alt="${p.nome}">`;
-    } else {
-      const inner = thumb.querySelector('.product-emoji-placeholder');
-      if (inner) {
-        inner.textContent = p.emoji;
-        inner.style.background = `linear-gradient(${angles[i] || '135deg'}, ${p.cor1}, ${p.cor2})`;
-        inner.style.height = '100%';
-        inner.style.fontSize = '30px';
-        inner.style.borderRadius = '0';
-      }
-    }
-    if (i === 0) thumb.classList.add('active');
-  });
+  // Galeria: só as imagens reais do produto
+  renderGallery(p);
 
   // Page category title
   const pageCat = {
     'adesivos': 'Adesivos',
-    'action-figures': 'Figures',
+    'action-figures': 'Action Figures',
     'funko-pop': 'Funko Pop',
     'topo-de-bolo': 'Topo de Bolo',
     'caixas-milk': 'Caixa Milk',
     'cartoes': 'Cartões de Visita',
-    'figurinhas-copa': 'Figurinhas Copa'
   };
   const pageCatEl = document.getElementById('page-category-title');
   if (pageCatEl) pageCatEl.textContent = pageCat[p.categoria] || p.categoria;
@@ -293,16 +238,6 @@ function initProductPage() {
   // WhatsApp link
   const waBtn = document.getElementById('whatsapp-btn');
   if (waBtn) waBtn.href = buildWhatsAppLink(p);
-
-  initGallery();
-}
-
-// ─── INICIALIZAÇÃO CATEGORIA ───────────────────
-function initCategoryPage() {
-  const grid = document.getElementById('products-grid');
-  if (!grid || typeof PRODUCTS === 'undefined') return;
-  renderCategoryFilter('all');
-  initFilterTabs();
 }
 
 // ─── INICIALIZAÇÃO POR SUBSECTION ─────────────
@@ -315,14 +250,28 @@ function renderSubsections() {
   });
 }
 
+// ─── INICIALIZAÇÃO PERSONALIZADOS ─────────────
+function initPersonalizadosPage() {
+  const sections = [
+    { id: 'grid-personalizados-cartoes', fn: getCartoesPersonalizados },
+    { id: 'grid-personalizados-funko', fn: getFunkosPersonalizados },
+    { id: 'grid-personalizados-adesivos', fn: getAdesivosPersonalizados },
+    { id: 'grid-personalizados-figurinhas', fn: getFigurinhasPersonalizadas },
+  ];
+  sections.forEach(({ id, fn }) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = fn().map(renderProductCard).join('');
+  });
+}
+
 // ─── BOOT ──────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   const page = location.pathname.split('/').pop() || 'index.html';
 
   if (page === 'index.html' || page === '') initHome();
   else if (page === 'produto.html') initProductPage();
-  else if (['action-figures.html', 'funko-pop.html'].includes(page)) initCategoryPage();
-  else if (['adesivos.html', 'topo-de-bolo.html', 'caixas-milk.html', 'cartoes.html', 'figurinhas.html'].includes(page)) {
+  else if (page === 'personalizados.html') initPersonalizadosPage();
+  else if (['adesivos.html', 'action-figures.html', 'funko-pop.html', 'topo-de-bolo.html', 'caixas-milk.html'].includes(page)) {
     renderSubsections();
   }
 

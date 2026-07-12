@@ -43,7 +43,15 @@ function cartAdd(item) {
     items.push(item);
   }
   cartSave(items);
-  openCartDrawer();
+  bumpCartBadge();
+}
+
+function bumpCartBadge() {
+  document.querySelectorAll('.cart-badge').forEach(b => {
+    b.classList.remove('bump');
+    void b.offsetWidth; // força reflow pra reiniciar a animação
+    b.classList.add('bump');
+  });
 }
 
 function cartRemove(index) {

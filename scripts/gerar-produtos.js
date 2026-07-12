@@ -223,6 +223,39 @@ function addProduct(p) {
     });
   });
 
+  // Adesivos "clássicos" do site (arte própria Nexus, já existentes em images/) —
+  // mantidos junto dos novos, conforme pedido do dono.
+  const LEGACY = [
+    { id: 'ad-luffy-gear5', nome: 'Luffy Gear 5', imagem: 'images/luffy.png', serie: 'One Piece', cor1: '#FF4500', cor2: '#FFD700', emoji: '🏴‍☠️', destaque: true,
+      descricao: 'Adesivo recortado em vinil de alta qualidade do Monkey D. Luffy no Gear 5! Acabamento resistente à água e aos raios UV. Ideal para notebooks, skates, garrafas e capacetes.' },
+    { id: 'ad-naruto-rasengan', nome: 'Naruto Rasengan', imagem: 'images/narutostk.png', serie: 'Naruto', cor1: '#FF8C00', cor2: '#FFA500', emoji: '⚡', destaque: true,
+      descricao: 'Adesivo do Naruto Uzumaki com Rasengan em vinil de alta qualidade. Acabamento premium resistente à água e UV.' },
+    { id: 'ad-goku-ultra', nome: 'Goku Ultra Instinct', imagem: 'images/gokustk.png', serie: 'Dragon Ball', cor1: '#6366F1', cor2: '#A855F7', emoji: '🐉', destaque: true,
+      descricao: 'Adesivo premium do Son Goku em Ultra Instinct! Vinil de alta qualidade com acabamento especial que realça os detalhes da transformação.' },
+    { id: 'ad-demon-slayer', nome: 'Tanjiro Kamado', imagem: 'images/tanjirostk.png', serie: 'Demon Slayer', cor1: '#006994', cor2: '#008B8B', emoji: '🗡️', destaque: false,
+      descricao: 'Adesivo do Tanjiro Kamado de Demon Slayer em vinil de alta qualidade, com os detalhes do kimono xadrez e a espada da respiração da água.' },
+    { id: 'ad-breaking-bad', nome: 'Heisenberg', imagem: 'images/misterwhitestk.png', serie: 'Breaking Bad', cor1: '#222222', cor2: '#555555', emoji: '🎩', destaque: false,
+      descricao: 'Adesivo minimalista do Heisenberg (Walter White) de Breaking Bad, estilo sombra, em vinil de alta qualidade.' },
+    { id: 'ad-stranger-things', nome: 'Stranger Things', imagem: 'images/elevenstk.png', serie: 'Stranger Things', cor1: '#8B0000', cor2: '#CC0000', emoji: '👾', destaque: false,
+      descricao: 'Adesivo da logo de Stranger Things com efeito retrô anos 80, em vinil de alta qualidade com acabamento brilhante.' },
+    { id: 'ad-rick-morty', nome: 'Rick e Morty', imagem: 'images/rick.png', serie: 'Rick and Morty', cor1: '#00B4D8', cor2: '#90E0EF', emoji: '🧪', destaque: false,
+      descricao: 'Adesivo do duo mais hilário e científico da animação! Rick e Morty em vinil de alta qualidade com cores vibrantes.' },
+    { id: 'ad-bob-esponja', nome: 'Bob Esponja', imagem: 'images/bobstk.png', serie: 'Bob Esponja', cor1: '#FFD700', cor2: '#FFA500', emoji: '🧽', destaque: false,
+      descricao: 'O personagem mais querido do fundo do mar em adesivo de vinil! Bob Esponja feliz e pronto para animar seu objeto favorito.' },
+    { id: 'ad-simpsons', nome: 'Homer Simpson', imagem: 'images/homerstk.png', serie: 'The Simpsons', cor1: '#FFD700', cor2: '#4169E1', emoji: '🍩', destaque: false,
+      descricao: 'Adesivo do Homer Simpson em vinil de alta qualidade, o clássico personagem da família mais famosa da TV americana.' },
+    { id: 'ad-mandalorian', nome: 'The Mandalorian', imagem: 'images/mandalorianstk.png', serie: 'Star Wars', cor1: '#708090', cor2: '#A0A0A0', emoji: '🪖', destaque: false,
+      descricao: 'Este é o Caminho. Adesivo do Mandalorian com acabamento que simula a armadura de beskar, para fãs de Star Wars.' },
+  ];
+  LEGACY.forEach(p => addProduct({
+    id: p.id, nome: p.nome, imagem: p.imagem,
+    categoria: 'adesivos', subcategoria: 'tematicos', serie: p.serie,
+    precoTipo: 'unidade', precoConst: 'STICKER_UNITARIO',
+    descricao: `${p.descricao} Vendido avulso.`,
+    specs: ['Material: Vinil de alta qualidade', 'Acabamento: Fosco ou brilhante (a combinar)', 'Resistente à água e UV', 'Tamanho aproximado: 10×10 cm (personalizável)', 'Vendido por unidade'],
+    emoji: p.emoji, cor1: p.cor1, cor2: p.cor2, destaque: p.destaque,
+  }));
+
   // Serviços: cartela pronta com 24 adesivos temáticos + criação de logo vetorizada
   addProduct({
     id: 'ad-cartela-24-tematicos', nome: 'Cartela com 24 Adesivos Temáticos',
@@ -246,7 +279,8 @@ function addProduct(p) {
 (function actionFigures() {
   const st = STYLE['action-figures'];
   const baseDir = path.join(SRC, '3D/Action Figures');
-  const folders = naturalSort(fs.readdirSync(baseDir).filter(f => fs.statSync(path.join(baseDir, f)).isDirectory()));
+  const folders = naturalSort(fs.readdirSync(baseDir).filter(f => fs.statSync(path.join(baseDir, f)).isDirectory()))
+    .filter(f => f !== 'Cerberus'); // Cerberus é um Funko Pop, ver função funkoPop()
   const ACESSORIOS = new Set(['Suporte Controle Hollow Knight']);
   folders.forEach(folder => {
     const slug = slugify(folder);
@@ -289,9 +323,23 @@ function addProduct(p) {
       emoji: st.emoji, cor1: st.cor1, cor2: st.cor2, destaque: false,
     });
   });
+
+  // Cerberus vem da pasta de Action Figures, mas é um Funko Pop
+  const cerbSrcDir = path.join(SRC, '3D/Action Figures/Cerberus');
+  const cerbDestDir = path.join(IMG_DEST_ROOT, 'funko-pop/cerberus');
+  const cerbImgs = listPngs(cerbSrcDir).map(f => toSiteRelative(copyInto(path.join(cerbSrcDir, f), cerbDestDir)));
+  addProduct({
+    id: 'fp-cerberus', nome: 'Cerberus',
+    imagem: cerbImgs[0], imagens: cerbImgs,
+    categoria: 'funko-pop', subcategoria: 'personagens', serie: 'Funko Pop 3D',
+    precoTipo: 'unico', precoConst: 'PRECO_FUNKO_PERSONALIZADO',
+    descricao: 'Funko Pop estilo Cerberus, impresso sob encomenda em PLA de alta qualidade (Bambu Lab A1) com pintura artesanal, no clássico estilo cabeça grande.\n\nMaterial: PLA\nProcesso: Impressão 3D\nProduto decorativo e colecionável',
+    specs: ['Material: PLA de alta qualidade', 'Processo: Impressão 3D Bambu Lab A1', 'Altura aproximada: ~12 cm (estilo Funko)', 'Pintura artesanal', 'Produto decorativo'],
+    emoji: st.emoji, cor1: st.cor1, cor2: st.cor2, destaque: false,
+  });
 })();
 
-/* ═══════════════════ CARTÕES DE VISITA (nova categoria) ═══════════════════ */
+/* ═══════════════════ CARTÕES DE VISITA (dado usado na página Personalizados) ═══════════════════ */
 (function cartoes() {
   const st = STYLE['cartoes'];
   const srcDir = path.join(SRC, 'CARTÕES/Personalizados');
@@ -308,15 +356,17 @@ function addProduct(p) {
   });
 })();
 
-/* ═══════════════════ FIGURINHAS COPA (nova categoria) ═══════════════════ */
+/* ═══════════════════ FIGURINHAS COPA (subcategoria dentro de Adesivos) ═══════════════════ */
 (function figurinhasCopa() {
   const st = STYLE['figurinhas-copa'];
   const base = path.join(SRC, 'FIGURINHAS COPA');
 
-  function addFigurinha(id, nome, imgs, sub, serie) {
+  // categoria fica 'adesivos' (subcategoria única 'figurinhas-copa') — a "série"
+  // (Figurinha Anime / Blue Lock / etc) continua diferenciando o tipo no card.
+  function addFigurinha(id, nome, imgs, serie) {
     addProduct({
       id, nome, imagem: imgs[0], imagens: imgs,
-      categoria: 'figurinhas-copa', subcategoria: sub, serie,
+      categoria: 'adesivos', subcategoria: 'figurinhas-copa', serie,
       precoTipo: 'unidade', precoConst: 'STICKER_UNITARIO',
       descricao: `Figurinha ${nome} estilo álbum, impressão de alta qualidade e corte de precisão. Vendida avulsa — ótima para álbuns temáticos, troca com amigos ou lembrancinha de festa.`,
       specs: ['Impressão de alta qualidade', 'Corte de precisão', 'Vendida por unidade', 'Ideal para álbuns e trocas'],
@@ -331,7 +381,7 @@ function addProduct(p) {
     const key = file.replace(/\.png$/i, '');
     const nome = ANIME_NAMES[key] || key;
     const dest = toSiteRelative(copyInto(path.join(animeDir, file), destAnime));
-    addFigurinha(`fc-anime-${slugify(key)}`, nome, [dest], 'anime', 'Figurinha Anime');
+    addFigurinha(`fc-anime-${slugify(key)}`, nome, [dest], 'Figurinha Anime');
   });
 
   // Blue Lock
@@ -341,7 +391,7 @@ function addProduct(p) {
     const key = file.replace(/\.png$/i, '');
     const nome = BLUELOCK_NAMES[key] || key;
     const dest = toSiteRelative(copyInto(path.join(blDir, file), destBl));
-    addFigurinha(`fc-bluelock-${slugify(key)}`, nome, [dest], 'blue-lock', 'Figurinha Blue Lock');
+    addFigurinha(`fc-bluelock-${slugify(key)}`, nome, [dest], 'Figurinha Blue Lock');
   });
 
   // One Piece (numeradas, sem nome de personagem identificado)
@@ -350,25 +400,25 @@ function addProduct(p) {
   listPngs(opDir).forEach(file => {
     const n = file.match(/(\d+)/)?.[1] || '';
     const dest = toSiteRelative(copyInto(path.join(opDir, file), destOp));
-    addFigurinha(`fc-op-${n}`, `Figurinha One Piece Nº${n}`, [dest], 'one-piece', 'Figurinha One Piece');
+    addFigurinha(`fc-op-${n}`, `Figurinha One Piece Nº${n}`, [dest], 'Figurinha One Piece');
   });
 
   // Personalizadas: neymar (galeria) + genéricas
   const persDir = path.join(base, 'Personalizadas');
   const destPersFc = path.join(IMG_DEST_ROOT, 'figurinhas-copa/personalizadas');
   const neymarImgs = ['neymar-1.png', 'neymar-2.png', 'neymar-3.png'].map(f => toSiteRelative(copyInto(path.join(persDir, f), destPersFc)));
-  addFigurinha('fc-personalizada-neymar', 'Figurinha Neymar Personalizada', neymarImgs, 'personalizadas', 'Figurinha Personalizada');
+  addFigurinha('fc-personalizada-neymar', 'Figurinha Neymar Personalizada', neymarImgs, 'Figurinha Personalizada');
   ['personalizada-1.png', 'personalizada-2.png', 'personalizada-3.png', 'personalizada-4.png'].forEach(file => {
     const n = file.match(/(\d+)/)?.[1] || '';
     const dest = toSiteRelative(copyInto(path.join(persDir, file), destPersFc));
-    addFigurinha(`fc-personalizada-${n}`, `Figurinha Personalizada Nº${n}`, [dest], 'personalizadas', 'Figurinha Personalizada');
+    addFigurinha(`fc-personalizada-${n}`, `Figurinha Personalizada Nº${n}`, [dest], 'Figurinha Personalizada');
   });
 
   // Pets Personalizados (galeria única — exemplos do serviço)
   const petsDir = path.join(base, 'Pets Personalizados');
   const destPets = path.join(IMG_DEST_ROOT, 'figurinhas-copa/pets');
   const petsImgs = listPngs(petsDir).map(f => toSiteRelative(copyInto(path.join(petsDir, f), destPets)));
-  addFigurinha('fc-pet-personalizado', 'Figurinha Pet Personalizado', petsImgs, 'pets', 'Figurinha Pet');
+  addFigurinha('fc-pet-personalizado', 'Figurinha Pet Personalizado', petsImgs, 'Figurinha Pet');
 })();
 
 /* ═══════════════════ TOPO DE BOLO (mantém fotos atuais, preço do flyer) ═══════════════════ */
@@ -479,6 +529,21 @@ function getMaisVendidos(limit = 5) {
 
 function getProductById(id) {
   return PRODUCTS.find(p => p.id === id);
+}
+
+/* Página "Personalizados" — reúne os 4 tipos de produto sob encomenda */
+function getCartoesPersonalizados() {
+  return PRODUCTS.filter(p => p.categoria === 'cartoes');
+}
+function getFunkosPersonalizados() {
+  return PRODUCTS.filter(p => p.categoria === 'funko-pop');
+}
+function getAdesivosPersonalizados() {
+  return getProductsBySubcategory('adesivos', 'personalizados');
+}
+function getFigurinhasPersonalizadas() {
+  return PRODUCTS.filter(p => p.categoria === 'adesivos' && p.subcategoria === 'figurinhas-copa'
+    && (p.id.indexOf('fc-personalizada') === 0 || p.id.indexOf('fc-pet') === 0));
 }
 
 function formatPrice(val) {
